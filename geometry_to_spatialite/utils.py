@@ -58,6 +58,12 @@ def files_from_paths(paths, pattern):
     return files
 
 
+def filename_to_table_name(path):
+    _, filename = os.path.split(path)
+    table_name, _ = os.path.splitext(filename)
+    return table_name
+
+
 def enable_spatialite_extension(conn, extension):
     if extension:
         conn.load_extension(extension)
@@ -178,12 +184,6 @@ class GeometryTable:
         )
 
 
-def filename_to_table_name(path):
-    _, filename = os.path.split(path)
-    table_name, _ = os.path.splitext(filename)
-    return table_name
-
-
 class FeatureLoader:
     def __init__(self, db, features, table_name, srid, pk, columns):
         self.db = db
@@ -195,11 +195,6 @@ class FeatureLoader:
         self.table_name = table_name
         self.columns = columns
         self.geom_type = self.columns.pop("geometry", "GEOMETRY")
-
-    def filename_to_table_name(self, path):
-        _, filename = os.path.split(path)
-        table_name, _ = os.path.splitext(filename)
-        return table_name
 
     @property
     def pk(self):
