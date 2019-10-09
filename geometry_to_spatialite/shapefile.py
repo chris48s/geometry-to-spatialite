@@ -36,7 +36,7 @@ def shp_to_spatialite(
 cli = Command(shp_to_spatialite, "SHP")
 
 
-if __name__ == "__main__":
+def main():
     args = cli.parse_args(sys.argv[1:])
     cli.invoke(
         paths=args.paths,

@@ -48,7 +48,7 @@ def geojson_to_spatialite(
 cli = Command(geojson_to_spatialite, "GeoJSON")
 
 
-if __name__ == "__main__":
+def main():
     args = cli.parse_args(sys.argv[1:])
     cli.invoke(
         paths=args.paths,

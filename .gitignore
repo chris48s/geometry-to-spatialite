@@ -1,0 +1,11 @@
+# python cache files
+__pycache__/
+*.pyc
+
+# build artifacts
+build/
+dist/
+geometry_to_spatialite.egg-info/
+
+# test coverage
+.coverage

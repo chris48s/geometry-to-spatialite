@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "geometry-to-spatialite"
+version = "0.1.0"
+description = "Import geographic and spatial data from files into a SpatiaLite DB"
+authors = ["chris48s"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/chris48s/geometry-to-spatialite"
+homepage = "https://github.com/chris48s/geometry-to-spatialite"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+sqlite-utils = "^1.11"
+geojson = "^2.5.0"
+Shapely = "^1.6.4"
+pyshp = "^2.1.0"
+
+[tool.poetry.dev-dependencies]
+isort = "^4.3"
+pyflakes = "^2.1.1"
+coverage = "^4.5.4"
+black = { version = "==19.3b0", allows-prereleases = true }
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+[tool.poetry.scripts]
+geojson-to-spatialite = 'geometry_to_spatialite.geojson:main'
+shapefile-to-spatialite = 'geometry_to_spatialite.shapefile:main'
