@@ -1,0 +1,18 @@
+dist: xenial
+language: python
+python:
+  - '3.6'
+  - '3.7'
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y spatialite-bin libsqlite3-mod-spatialite
+  - pip install poetry
+install:
+  - poetry install
+script:
+  - coverage run --source=geometry_to_spatialite ./run_tests.py
+  # TODO: isort
+  - flake8 .
+  - black --check .
+after_success:
+  - coveralls
