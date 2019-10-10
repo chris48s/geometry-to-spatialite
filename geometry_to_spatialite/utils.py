@@ -75,7 +75,9 @@ def enable_spatialite_extension(conn, extension):
             except sqlite3.OperationalError:
                 continue
     raise DataImportError(
-        "Failed to load the SpatiaLite extension. See <TODO: link some kind of relevant docs> for more info."
+        "Failed to load the SpatiaLite extension. See "
+        "https://github.com/chris48s/geometry-to-spatialite#failed-to-load-the-spatialite-extension "
+        "for more info."
     )
 
 
