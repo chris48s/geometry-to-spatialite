@@ -92,6 +92,10 @@ def create_connection(sqlite_db, extension):
     return Database(conn)
 
 
+def escape(name):
+    return name.replace('"', '""')
+
+
 class TempTable:
     def __init__(self, db, columns, pk):
         self.db = db
@@ -146,19 +150,21 @@ class GeometryTable:
     def create_from(self, temp_table):
         # create table based on the structure of temp_table
         table_info = self.db.conn.execute(
-            f"PRAGMA table_info('{temp_table.name}');"
+            f'PRAGMA table_info("{temp_table.name}");'
         ).fetchall()
         columns = []
         for col in table_info:
             if col[1] == "geometry":
                 continue
             if col[5] == 1:
-                columns.append(f"[{col[1]}] {col[2]} PRIMARY KEY")
+                columns.append(f'"{escape(col[1])}" {col[2]} PRIMARY KEY')
             else:
-                columns.append(f"[{col[1]}] {col[2]}")
+                columns.append(f'"{escape(col[1])}" {col[2]}')
 
         columns_clause = ",\n  ".join(columns)
-        create_statement = f"CREATE TABLE [{self.table.name}] ({columns_clause});"
+        create_statement = (
+            f'CREATE TABLE "{escape(self.table.name)}" ({columns_clause});'
+        )
         self.db.conn.execute(create_statement)
         self.db.conn.execute(
             f"SELECT AddGeometryColumn(?, 'geometry', ?, ?, 2);",
@@ -169,14 +175,16 @@ class GeometryTable:
         # copy the data from temp_table to self.table
         # transforming the geometry from TEXT to GEOMETRY as we go
         table_info = self.db.conn.execute(
-            f"PRAGMA table_info('{self.table.name}');"
+            f'PRAGMA table_info("{escape(self.table.name)}");'
         ).fetchall()
         columns = [
-            "ST_GeomFromText(geometry, ?)" if col[1] == "geometry" else f"[{col[1]}]"
+            "ST_GeomFromText(geometry, ?)"
+            if col[1] == "geometry"
+            else f'"{escape(col[1])}"'
             for col in table_info
         ]
         self.db.conn.execute(
-            f"INSERT INTO '{self.table.name}' SELECT {', '.join(columns)} FROM '{temp_table.name}';",
+            f'INSERT INTO "{escape(self.table.name)}" SELECT {", ".join(columns)} FROM "{temp_table.name}";',
             [self.srid],
         )
 
