@@ -1,10 +1,22 @@
 # geometry-to-spatialite
 
+[![Build Status](https://travis-ci.org/chris48s/geometry-to-spatialite.svg?branch=master)](https://travis-ci.org/chris48s/geometry-to-spatialite)
+[![Coverage Status](https://coveralls.io/repos/github/chris48s/geometry-to-spatialite/badge.svg?branch=master)](https://coveralls.io/github/chris48s/geometry-to-spatialite?branch=master)
+[![PyPI Version](https://img.shields.io/pypi/v/geometry-to-spatialite.svg)](https://pypi.org/project/geometry-to-spatialite/)
+![License](https://img.shields.io/pypi/l/geometry-to-spatialite.svg)
+![Python Support](https://img.shields.io/pypi/pyversions/geometry-to-spatialite.svg)
+![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)
+
+
 Import geographic and spatial data from files into a SpatiaLite DB.
 
 This project is primarily useful for browsing and publishing geographic and spatial data with [datasette](https://github.com/simonw/datasette) and [datasette-leaflet-geojson](https://github.com/simonw/datasette-leaflet-geojson). It is inspired by [csvs-to-sqlite](https://github.com/simonw/csvs-to-sqlite) and provides a similar interface.
 
 ## Setup
+
+```
+pip install geometry-to-spatialite
+```
 
 You'll need python >=3.6 and the [SpatiaLite](https://www.gaia-gis.it/fossil/libspatialite/index) module for SQLite. 
 
