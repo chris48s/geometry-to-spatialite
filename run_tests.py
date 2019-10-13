@@ -4,7 +4,6 @@ import os
 import sys
 import unittest
 
-
 if __name__ == "__main__":
     dirname = os.path.dirname(os.path.abspath(__file__))
     loader = unittest.TestLoader()
