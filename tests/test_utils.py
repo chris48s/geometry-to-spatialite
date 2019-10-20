@@ -1,4 +1,3 @@
-import os
 import sqlite3
 from unittest import TestCase
 
@@ -7,10 +6,7 @@ from geometry_to_spatialite.utils import TempTable, create_connection
 
 class TempTableTests(TestCase):
     def setUp(self):
-        self.db = create_connection("unit_tests.db", None)
-
-    def tearDown(self):
-        os.remove("unit_tests.db")
+        self.db = create_connection(":memory:", None)
 
     def test_temp_table_deleted_on_context_exit(self):
         with TempTable(self.db, {}, None) as temp_table:
