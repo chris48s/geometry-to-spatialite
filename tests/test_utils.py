@@ -1,4 +1,3 @@
-import sqlite3
 from unittest import TestCase
 
 from geometry_to_spatialite.utils import TempTable, create_connection
@@ -18,5 +17,7 @@ class TempTableTests(TestCase):
                 ).fetchone()[0],
             )
 
-        with self.assertRaises(sqlite3.OperationalError):
-            self.db.conn.execute(f"SELECT foo FROM [{temp_table.name}] LIMIT 1")
+        tables = self.db.conn.execute(
+            f"SELECT name FROM sqlite_master WHERE type='table' AND name='{temp_table.name}';"
+        ).fetchall()
+        self.assertEqual(0, len(tables))

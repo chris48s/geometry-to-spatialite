@@ -1,5 +1,4 @@
 import os
-import sqlite3
 from unittest import TestCase
 
 from geometry_to_spatialite.geojson import geojson_to_spatialite
@@ -43,15 +42,20 @@ class GeoJsonToSpatialiteTests(TestCase):
         )
 
         # ensure the spatial index was created
-        self.conn.execute("SELECT * FROM idx_valid_geometry;")
+        indexes = self.conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='idx_valid_geometry';"
+        ).fetchall()
+        self.assertEqual(1, len(indexes))
 
     def test_success_with_table_name(self):
         geojson_to_spatialite(
             "unit_tests.db", "tests/fixtures/geojson/valid.geojson", table_name="foobar"
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM foobar;").fetchall()))
-        with self.assertRaises(sqlite3.OperationalError):
-            self.conn.execute("SELECT * FROM valid;")
+        tables = self.conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='valid';"
+        ).fetchall()
+        self.assertEqual(0, len(tables))
 
     def test_success_with_srid(self):
         geojson_to_spatialite(
