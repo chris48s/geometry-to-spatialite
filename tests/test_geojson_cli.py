@@ -121,6 +121,6 @@ class ParseArgsTests(TestCase):
         self.assertEqual(["abc.geojson"], args.paths)
         self.assertEqual("database.db", args.dbname)
         self.assertEqual("foobar", args.table)
-        self.assertEqual("id", args.primary_key)
+        self.assertEqual(["id"], args.primary_key)
         self.assertEqual(1234, args.srid)
         self.assertEqual("/usr/lib/mod_spatialite.so", args.spatialite_extension)

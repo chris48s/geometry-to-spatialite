@@ -153,17 +153,20 @@ class GeometryTable:
             f'PRAGMA table_info("{temp_table.name}");'
         ).fetchall()
         columns = []
+        pks = []
         for col in table_info:
             if col[1] == "geometry":
                 continue
-            if col[5] == 1:
-                columns.append(f'"{escape(col[1])}" {col[2]} PRIMARY KEY')
-            else:
-                columns.append(f'"{escape(col[1])}" {col[2]}')
+            if col[5] > 0:
+                pks.append(escape(col[1]))
+            columns.append(f'"{escape(col[1])}" {col[2]}')
 
         columns_clause = ",\n  ".join(columns)
+        pks_clause = ""
+        if pks:
+            pks_clause = f", PRIMARY KEY ({','.join(pks)})"
         create_statement = (
-            f'CREATE TABLE "{escape(self.table.name)}" ({columns_clause});'
+            f'CREATE TABLE "{escape(self.table.name)}" ({columns_clause}{pks_clause});'
         )
         self.db.conn.execute(create_statement)
         self.db.conn.execute(
@@ -215,12 +218,29 @@ class FeatureLoader:
         if pk is None:
             self._pk = pk
             return
+
+        if isinstance(pk, (list, tuple)):
+            if len(pk) == 1:
+                self._pk = pk[0]
+            else:
+                self._pk = pk
+        elif isinstance(pk, str):
+            self._pk = pk
+        else:
+            raise TypeError("pk must be a string, a list, or a tuple")
+
+        if isinstance(self._pk, str):
+            keys = [self._pk]
+        else:
+            keys = self._pk
+
         for feature in self.features:
-            if pk not in feature["properties"]:
-                raise DataImportError(
-                    f"Field '{pk}' must exist in every feature to be used as Primary Key"
-                )
-        self._pk = pk
+            for key in keys:
+                if key not in feature["properties"]:
+                    raise DataImportError(
+                        f"Field '{pk}' must exist in every feature to be used as Primary Key"
+                    )
+
         return
 
     def make_record(self, feature):
@@ -317,8 +337,9 @@ class Command:
         arg_parser.add_argument(
             "--primary-key",
             "-pk",
-            help="Column to use as the primary key",
+            help="One or more columns to use as the primary key",
             default=None,
+            nargs="+",
         )
         arg_parser.add_argument(
             "--srid",

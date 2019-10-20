@@ -87,12 +87,32 @@ class ShpToSpatialiteTests(TestCase):
             27700, self.conn.execute("SELECT srid(geometry) FROM points;").fetchone()[0]
         )
 
-    def test_success_with_primary_key(self):
+    def test_success_with_string_primary_key(self):
         shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp", pk="id")
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
         self.assertDictEqual(
             {"id": 1, "prop0": 0, "prop1": 0, "geometry": 0},
+            {col[1]: col[5] for col in cols},
+        )
+
+    def test_success_with_list_primary_key(self):
+        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp", pk=["id"])
+        self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
+        cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
+        self.assertDictEqual(
+            {"id": 1, "prop0": 0, "prop1": 0, "geometry": 0},
+            {col[1]: col[5] for col in cols},
+        )
+
+    def test_success_with_composite_key(self):
+        shp_to_spatialite(
+            "unit_tests.db", "tests/fixtures/shp/points.shp", pk=["id", "prop1"]
+        )
+        self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
+        cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
+        self.assertDictEqual(
+            {"id": 2, "prop0": 0, "prop1": 1, "geometry": 0},
             {col[1]: col[5] for col in cols},
         )
 

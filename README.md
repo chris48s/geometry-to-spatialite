@@ -94,7 +94,8 @@ try:
         'myfile.geojson',
         table_name='custom',  # set a custom table name (defaults to the filename)
         srid=3857,            # specify a custom SRID (default is 4326)
-        pk='id',              # field to use as a primary key (default is no primary key)
+        pk='id',              # field (str) or fields (list/tuple) to use as a
+                              # primary key (default is no primary key)
 
         # In most cases the spatialite extension will be automatically detected and loaded
         # If not you can manully pass a path to the .so .dylib or .dll file
