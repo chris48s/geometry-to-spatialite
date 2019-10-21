@@ -24,6 +24,7 @@ class CliTests(TestCase):
             dbname="unit_tests.db",
             table="valid",
             primary_key=None,
+            write_mode=None,
             srid=4326,
             spatialite_extension=None,
         )
@@ -36,6 +37,7 @@ class CliTests(TestCase):
             dbname="unit_tests",
             table="valid",
             primary_key=None,
+            write_mode=None,
             srid=4326,
             spatialite_extension=None,
         )
@@ -48,6 +50,7 @@ class CliTests(TestCase):
             dbname="unit_tests",
             table="custom",
             primary_key=None,
+            write_mode=None,
             srid=4326,
             spatialite_extension=None,
         )
@@ -63,6 +66,7 @@ class CliTests(TestCase):
             dbname="unit_tests.db",
             table="valid",
             primary_key=None,
+            write_mode=None,
             srid=4326,
             spatialite_extension=None,
         )
@@ -78,6 +82,7 @@ class CliTests(TestCase):
                 dbname="unit_tests.db",
                 table="valid",
                 primary_key=None,
+                write_mode=None,
                 srid=4326,
                 spatialite_extension=None,
             )
@@ -102,6 +107,7 @@ class ParseArgsTests(TestCase):
         self.assertEqual(None, args.primary_key)
         self.assertEqual(4326, args.srid)
         self.assertEqual(None, args.spatialite_extension)
+        self.assertEqual(None, args.write_mode)
 
     def test_all_extra_args(self):
         args = cli.parse_args(
@@ -116,6 +122,8 @@ class ParseArgsTests(TestCase):
                 "1234",
                 "--spatialite-extension",
                 "/usr/lib/mod_spatialite.so",
+                "--write-mode",
+                "append",
             ]
         )
         self.assertEqual(["abc.geojson"], args.paths)
@@ -124,3 +132,4 @@ class ParseArgsTests(TestCase):
         self.assertEqual(["id"], args.primary_key)
         self.assertEqual(1234, args.srid)
         self.assertEqual("/usr/lib/mod_spatialite.so", args.spatialite_extension)
+        self.assertEqual("append", args.write_mode)

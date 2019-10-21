@@ -96,6 +96,16 @@ def escape(name):
     return name.replace('"', '""')
 
 
+def compare_tables(conn, t1, t2):
+    t1_info = conn.execute(f'PRAGMA table_info("{escape(t1)}");').fetchall()
+    t2_info = conn.execute(f'PRAGMA table_info("{escape(t2)}");').fetchall()
+    t1_info = [col[1:] for col in t1_info if col[1] != "geometry"]
+    t2_info = [col[1:] for col in t2_info if col[1] != "geometry"]
+    t1_info.sort(key=lambda x: x[1])
+    t2_info.sort(key=lambda x: x[1])
+    return t1_info == t2_info
+
+
 class TempTable:
     def __init__(self, db, columns, pk):
         self.db = db
@@ -143,8 +153,6 @@ class GeometryTable:
 
     @table.setter
     def table(self, table_name):
-        if table_name in self.db.table_names():
-            raise DataImportError(f"Table '{table_name}' already exists")
         self._table = self.db[table_name]
 
     def create_from(self, temp_table):
@@ -187,7 +195,10 @@ class GeometryTable:
             for col in table_info
         ]
         self.db.conn.execute(
-            f'INSERT INTO "{escape(self.table.name)}" SELECT {", ".join(columns)} FROM "{temp_table.name}";',
+            f"""
+            INSERT INTO "{escape(self.table.name)}"
+            SELECT {", ".join(columns)} FROM "{temp_table.name}";
+            """,
             [self.srid],
         )
 
@@ -198,7 +209,7 @@ class GeometryTable:
 
 
 class FeatureLoader:
-    def __init__(self, db, features, table_name, srid, pk, columns):
+    def __init__(self, db, features, table_name, srid, pk, columns, write_mode):
         self.db = db
         if not isinstance(srid, int):
             raise DataImportError("'srid' must be an int")
@@ -208,6 +219,18 @@ class FeatureLoader:
         self.table_name = table_name
         self.columns = columns
         self.geom_type = self.columns.pop("geometry", "GEOMETRY")
+        self.write_mode = write_mode
+
+    @property
+    def write_mode(self):
+        return self._write_mode
+
+    @write_mode.setter
+    def write_mode(self, write_mode):
+        allowed_values = (None, "replace", "append")
+        if write_mode not in allowed_values:
+            raise ValueError(f"write_mode must be one of {str(allowed_values)}")
+        self._write_mode = write_mode
 
     @property
     def pk(self):
@@ -274,9 +297,38 @@ class FeatureLoader:
             with GeometryTable(
                 self.db, self.table_name, self.srid, self.geom_type
             ) as table:
-                table.create_from(temp_table)
+                if self.table_name in self.db.table_names():
+                    if self.write_mode == "replace":
+                        self.db.conn.execute(
+                            f'SELECT DropGeoTable("{escape(self.table_name)}")'
+                        )
+                    elif self.write_mode == "append":
+                        if not compare_tables(
+                            self.db.conn, temp_table.name, table.name
+                        ):
+                            raise DataImportError(
+                                "Input file must have same column structure as target "
+                                "table to append to an existing table."
+                            )
+                    else:
+                        raise DataImportError(
+                            f"Table '{self.table_name}' already exists. Use "
+                            "write_mode to replace or append to existing tables."
+                        )
+
+                if self.table_name not in self.db.table_names():
+                    table.create_from(temp_table)
+
                 table.copy_from(temp_table)
-                table.create_spatial_index()
+
+                indexes = self.db.conn.execute(
+                    f"""
+                    SELECT name FROM sqlite_master WHERE type='table'
+                    AND name="idx_{escape(self.table_name)}_geometry";
+                    """
+                ).fetchall()
+                if len(indexes) == 0:
+                    table.create_spatial_index()
 
 
 class Command:
@@ -286,7 +338,17 @@ class Command:
         self.extension = f".{file_type.lower()}"
         self.pattern = f"*.{file_type.lower()}"
 
-    def invoke(self, *, paths, dbname, table, primary_key, srid, spatialite_extension):
+    def invoke(
+        self,
+        *,
+        paths,
+        dbname,
+        table,
+        primary_key,
+        write_mode,
+        srid,
+        spatialite_extension,
+    ):
         if "." not in dbname:
             dbname += ".db"
 
@@ -302,6 +364,7 @@ class Command:
                 spatialite_extension=spatialite_extension,
                 srid=srid,
                 pk=primary_key,
+                write_mode=write_mode,
             )
             print(f"Imported {paths[0]} into {dbname}")
         else:
@@ -313,6 +376,7 @@ class Command:
                     spatialite_extension=spatialite_extension,
                     srid=srid,
                     pk=primary_key,
+                    write_mode=write_mode,
                 )
                 print(f"Imported {filename} into {dbname}")
 
@@ -340,6 +404,12 @@ class Command:
             help="One or more columns to use as the primary key",
             default=None,
             nargs="+",
+        )
+        table_arg = arg_parser.add_argument(
+            "--write-mode",
+            help=f"Pass 'replace' or 'append' to overwrite or append to an existing table",
+            default=None,
+            choices=["replace", "append"],
         )
         arg_parser.add_argument(
             "--srid",

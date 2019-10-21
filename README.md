@@ -96,6 +96,8 @@ try:
         srid=3857,            # specify a custom SRID (default is 4326)
         pk='id',              # field (str) or fields (list/tuple) to use as a
                               # primary key (default is no primary key)
+        write_mode='append',  # pass 'replace' or 'append' to overwrite
+                              # or append to an existing table
 
         # In most cases the spatialite extension will be automatically detected and loaded
         # If not you can manully pass a path to the .so .dylib or .dll file

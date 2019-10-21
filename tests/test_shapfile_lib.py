@@ -123,10 +123,33 @@ class ShpToSpatialiteTests(TestCase):
             {col[1]: col[5] for col in cols},
         )
 
+    def test_success_append_to_table(self):
+        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+        shp_to_spatialite(
+            "unit_tests.db", "tests/fixtures/shp/points.shp", write_mode="append"
+        )
+        records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
+        self.assertEqual(6, len(records))
+
+    def test_success_overwrite_table(self):
+        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+        shp_to_spatialite(
+            "unit_tests.db", "tests/fixtures/shp/points.shp", write_mode="replace"
+        )
+        records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
+        self.assertEqual(3, len(records))
+
     def test_failure_table_already_exists(self):
-        self.conn.execute("CREATE TABLE points (id INT);")
+        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
         with self.assertRaises(DataImportError):
             shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+
+    def test_failure_cant_append_to_table(self):
+        self.conn.execute("CREATE TABLE points (id INT);")
+        with self.assertRaises(DataImportError):
+            shp_to_spatialite(
+                "unit_tests.db", "tests/fixtures/shp/points.shp", write_mode="append"
+            )
 
     def test_failure_invalid_srid(self):
         with self.assertRaises(DataImportError):

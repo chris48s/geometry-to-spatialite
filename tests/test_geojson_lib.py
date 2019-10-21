@@ -99,11 +99,38 @@ class GeoJsonToSpatialiteTests(TestCase):
             {col[1]: col[5] for col in cols},
         )
 
+    def test_success_append_to_table(self):
+        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
+        geojson_to_spatialite(
+            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", write_mode="append"
+        )
+        records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
+        self.assertEqual(6, len(records))
+
+    def test_success_overwrite_table(self):
+        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
+        geojson_to_spatialite(
+            "unit_tests.db",
+            "tests/fixtures/geojson/valid.geojson",
+            write_mode="replace",
+        )
+        records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
+        self.assertEqual(3, len(records))
+
     def test_failure_table_already_exists(self):
-        self.conn.execute("CREATE TABLE valid (id INT);")
+        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
         with self.assertRaises(DataImportError):
             geojson_to_spatialite(
                 "unit_tests.db", "tests/fixtures/geojson/valid.geojson"
+            )
+
+    def test_failure_cant_append_to_table(self):
+        self.conn.execute("CREATE TABLE valid (id INT);")
+        with self.assertRaises(DataImportError):
+            geojson_to_spatialite(
+                "unit_tests.db",
+                "tests/fixtures/geojson/valid.geojson",
+                write_mode="append",
             )
 
     def test_failure_invalid_srid(self):

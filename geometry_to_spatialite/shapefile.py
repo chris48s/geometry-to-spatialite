@@ -18,7 +18,13 @@ def shp_field_to_sql_type(field):
 
 
 def shp_to_spatialite(
-    sqlite_db, shp_file, table_name=None, spatialite_extension=None, srid=4326, pk=None
+    sqlite_db,
+    shp_file,
+    table_name=None,
+    spatialite_extension=None,
+    srid=4326,
+    pk=None,
+    write_mode=None,
 ):
     db = create_connection(sqlite_db, spatialite_extension)
     sf = shapefile.Reader(shp_file)
@@ -28,7 +34,7 @@ def shp_to_spatialite(
     }
     columns["geometry"] = features[0]["geometry"]["type"].upper()
     name = table_name or filename_to_table_name(shp_file)
-    loader = FeatureLoader(db, features, name, srid, pk, columns)
+    loader = FeatureLoader(db, features, name, srid, pk, columns, write_mode)
     loader.load()
     db.conn.close()
 
@@ -43,6 +49,7 @@ def main():
         dbname=args.dbname,
         table=args.table,
         primary_key=args.primary_key,
+        write_mode=args.write_mode,
         srid=args.srid,
         spatialite_extension=args.spatialite_extension,
     )

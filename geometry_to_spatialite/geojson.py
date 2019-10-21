@@ -35,12 +35,13 @@ def geojson_to_spatialite(
     spatialite_extension=None,
     srid=4326,
     pk=None,
+    write_mode=None,
 ):
     db = create_connection(sqlite_db, spatialite_extension)
     featurecollection = load_geojson(geojson_file)
     features = featurecollection["features"]
     name = table_name or filename_to_table_name(geojson_file)
-    loader = FeatureLoader(db, features, name, srid, pk, {})
+    loader = FeatureLoader(db, features, name, srid, pk, {}, write_mode)
     loader.load()
     db.conn.close()
 
@@ -55,6 +56,7 @@ def main():
         dbname=args.dbname,
         table=args.table,
         primary_key=args.primary_key,
+        write_mode=args.write_mode,
         srid=args.srid,
         spatialite_extension=args.spatialite_extension,
     )
