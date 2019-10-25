@@ -15,5 +15,6 @@ script:
   - isort **/*.py -c --diff
   - flake8 .
   - black --check .
+  - poetry build
 after_success:
   - coveralls
