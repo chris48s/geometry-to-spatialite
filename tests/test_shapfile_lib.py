@@ -1,4 +1,4 @@
-import os
+import tempfile
 from unittest import TestCase
 
 from geometry_to_spatialite.shapefile import shp_to_spatialite
@@ -7,14 +7,15 @@ from geometry_to_spatialite.utils import DataImportError, create_connection
 
 class ShpToSpatialiteTests(TestCase):
     def setUp(self):
-        db = create_connection("unit_tests.db", None)
+        self.tmp = tempfile.NamedTemporaryFile(suffix=".db")
+        db = create_connection(self.tmp.name, None)
         self.conn = db.conn
 
     def tearDown(self):
-        os.remove("unit_tests.db")
+        self.tmp.close()
 
     def test_points_with_defaults(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")
 
         # ensure all the right data was inserted
         records = self.conn.execute(
@@ -39,7 +40,7 @@ class ShpToSpatialiteTests(TestCase):
         self.assertEqual(1, len(indexes))
 
     def test_polygons_with_defaults(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/polygons.shp")
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/polygons.shp")
 
         # ensure all the right data was inserted
         records = self.conn.execute(
@@ -79,7 +80,7 @@ class ShpToSpatialiteTests(TestCase):
 
     def test_success_with_table_name(self):
         shp_to_spatialite(
-            "unit_tests.db", "tests/fixtures/shp/points.shp", table_name="foobar"
+            self.tmp.name, "tests/fixtures/shp/points.shp", table_name="foobar"
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM foobar;").fetchall()))
         tables = self.conn.execute(
@@ -88,14 +89,14 @@ class ShpToSpatialiteTests(TestCase):
         self.assertEqual(0, len(tables))
 
     def test_success_with_srid(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp", srid=27700)
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp", srid=27700)
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
         self.assertEqual(
             27700, self.conn.execute("SELECT srid(geometry) FROM points;").fetchone()[0]
         )
 
     def test_success_with_string_primary_key(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp", pk="id")
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp", pk="id")
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
         self.assertDictEqual(
@@ -104,7 +105,7 @@ class ShpToSpatialiteTests(TestCase):
         )
 
     def test_success_with_list_primary_key(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp", pk=["id"])
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp", pk=["id"])
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
         self.assertDictEqual(
@@ -114,7 +115,7 @@ class ShpToSpatialiteTests(TestCase):
 
     def test_success_with_composite_key(self):
         shp_to_spatialite(
-            "unit_tests.db", "tests/fixtures/shp/points.shp", pk=["id", "prop1"]
+            self.tmp.name, "tests/fixtures/shp/points.shp", pk=["id", "prop1"]
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
@@ -124,35 +125,35 @@ class ShpToSpatialiteTests(TestCase):
         )
 
     def test_success_append_to_table(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")
         shp_to_spatialite(
-            "unit_tests.db", "tests/fixtures/shp/points.shp", write_mode="append"
+            self.tmp.name, "tests/fixtures/shp/points.shp", write_mode="append"
         )
         records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
         self.assertEqual(6, len(records))
 
     def test_success_overwrite_table(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")
         shp_to_spatialite(
-            "unit_tests.db", "tests/fixtures/shp/points.shp", write_mode="replace"
+            self.tmp.name, "tests/fixtures/shp/points.shp", write_mode="replace"
         )
         records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
         self.assertEqual(3, len(records))
 
     def test_failure_table_already_exists(self):
-        shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")
         with self.assertRaises(DataImportError):
-            shp_to_spatialite("unit_tests.db", "tests/fixtures/shp/points.shp")
+            shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")
 
     def test_failure_cant_append_to_table(self):
         self.conn.execute("CREATE TABLE points (id INT);")
         with self.assertRaises(DataImportError):
             shp_to_spatialite(
-                "unit_tests.db", "tests/fixtures/shp/points.shp", write_mode="append"
+                self.tmp.name, "tests/fixtures/shp/points.shp", write_mode="append"
             )
 
     def test_failure_invalid_srid(self):
         with self.assertRaises(DataImportError):
             shp_to_spatialite(
-                "unit_tests.db", "tests/fixtures/shp/points.shp", srid="foobar"
+                self.tmp.name, "tests/fixtures/shp/points.shp", srid="foobar"
             )

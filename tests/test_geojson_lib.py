@@ -1,4 +1,4 @@
-import os
+import tempfile
 from unittest import TestCase
 
 from geometry_to_spatialite.geojson import geojson_to_spatialite
@@ -7,14 +7,15 @@ from geometry_to_spatialite.utils import DataImportError, create_connection
 
 class GeoJsonToSpatialiteTests(TestCase):
     def setUp(self):
-        db = create_connection("unit_tests.db", None)
+        self.tmp = tempfile.NamedTemporaryFile(suffix=".db")
+        db = create_connection(self.tmp.name, None)
         self.conn = db.conn
 
     def tearDown(self):
-        os.remove("unit_tests.db")
+        self.tmp.close()
 
     def test_success_with_defaults(self):
-        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
+        geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
 
         # ensure all the right data was inserted
         records = self.conn.execute(
@@ -49,7 +50,7 @@ class GeoJsonToSpatialiteTests(TestCase):
 
     def test_success_with_table_name(self):
         geojson_to_spatialite(
-            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", table_name="foobar"
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", table_name="foobar"
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM foobar;").fetchall()))
         tables = self.conn.execute(
@@ -59,7 +60,7 @@ class GeoJsonToSpatialiteTests(TestCase):
 
     def test_success_with_srid(self):
         geojson_to_spatialite(
-            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", srid=27700
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", srid=27700
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM valid;").fetchall()))
         self.assertEqual(
@@ -68,7 +69,7 @@ class GeoJsonToSpatialiteTests(TestCase):
 
     def test_success_with_string_primary_key(self):
         geojson_to_spatialite(
-            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", pk="id"
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", pk="id"
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM valid;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('valid');").fetchall()
@@ -79,7 +80,7 @@ class GeoJsonToSpatialiteTests(TestCase):
 
     def test_success_with_list_primary_key(self):
         geojson_to_spatialite(
-            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", pk=["id"]
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", pk=["id"]
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM valid;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('valid');").fetchall()
@@ -90,7 +91,7 @@ class GeoJsonToSpatialiteTests(TestCase):
 
     def test_success_with_composite_key(self):
         geojson_to_spatialite(
-            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", pk=["id", "prop0"]
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", pk=["id", "prop0"]
         )
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM valid;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('valid');").fetchall()
@@ -100,35 +101,31 @@ class GeoJsonToSpatialiteTests(TestCase):
         )
 
     def test_success_append_to_table(self):
-        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
+        geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
         geojson_to_spatialite(
-            "unit_tests.db", "tests/fixtures/geojson/valid.geojson", write_mode="append"
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", write_mode="append"
         )
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
         self.assertEqual(6, len(records))
 
     def test_success_overwrite_table(self):
-        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
+        geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
         geojson_to_spatialite(
-            "unit_tests.db",
-            "tests/fixtures/geojson/valid.geojson",
-            write_mode="replace",
+            self.tmp.name, "tests/fixtures/geojson/valid.geojson", write_mode="replace",
         )
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
         self.assertEqual(3, len(records))
 
     def test_failure_table_already_exists(self):
-        geojson_to_spatialite("unit_tests.db", "tests/fixtures/geojson/valid.geojson")
+        geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
         with self.assertRaises(DataImportError):
-            geojson_to_spatialite(
-                "unit_tests.db", "tests/fixtures/geojson/valid.geojson"
-            )
+            geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
 
     def test_failure_cant_append_to_table(self):
         self.conn.execute("CREATE TABLE valid (id INT);")
         with self.assertRaises(DataImportError):
             geojson_to_spatialite(
-                "unit_tests.db",
+                self.tmp.name,
                 "tests/fixtures/geojson/valid.geojson",
                 write_mode="append",
             )
@@ -136,17 +133,17 @@ class GeoJsonToSpatialiteTests(TestCase):
     def test_failure_invalid_srid(self):
         with self.assertRaises(DataImportError):
             geojson_to_spatialite(
-                "unit_tests.db", "tests/fixtures/geojson/valid.geojson", srid="foobar"
+                self.tmp.name, "tests/fixtures/geojson/valid.geojson", srid="foobar"
             )
 
     def test_failure_geojson_not_featurecollection(self):
         with self.assertRaises(DataImportError):
             geojson_to_spatialite(
-                "unit_tests.db", "tests/fixtures/geojson/feature.geojson"
+                self.tmp.name, "tests/fixtures/geojson/feature.geojson"
             )
 
     def test_failure_pk_not_in_every_feature(self):
         with self.assertRaises(DataImportError):
             geojson_to_spatialite(
-                "unit_tests.db", "tests/fixtures/geojson/valid.geojson", pk="prop1"
+                self.tmp.name, "tests/fixtures/geojson/valid.geojson", pk="prop1"
             )

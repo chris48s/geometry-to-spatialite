@@ -1,7 +1,7 @@
 import argparse
 import io
-import os
 import sys
+import tempfile
 from unittest import TestCase
 
 from geometry_to_spatialite.shapefile import cli
@@ -10,18 +10,19 @@ from geometry_to_spatialite.utils import create_connection
 
 class CliTests(TestCase):
     def setUp(self):
-        db = create_connection("unit_tests.db", None)
+        self.tmp = tempfile.NamedTemporaryFile(suffix=".db")
+        db = create_connection(self.tmp.name, None)
         self.conn = db.conn
         sys.stdout = io.StringIO()
 
     def tearDown(self):
-        os.remove("unit_tests.db")
+        self.tmp.close()
         sys.stdout = sys.__stdout__
 
     def test_success(self):
         cli.invoke(
             paths=["tests/fixtures/shp/points.shp"],
-            dbname="unit_tests.db",
+            dbname=self.tmp.name,
             table="points",
             primary_key=None,
             write_mode=None,
@@ -34,7 +35,7 @@ class CliTests(TestCase):
     def test_no_db_extension(self):
         cli.invoke(
             paths=["tests/fixtures/shp/points.shp"],
-            dbname="unit_tests",
+            dbname=self.tmp.name[:-3],
             table="points",
             primary_key=None,
             write_mode=None,
@@ -47,7 +48,7 @@ class CliTests(TestCase):
     def test_custom_table_name(self):
         cli.invoke(
             paths=["tests/fixtures/shp/points.shp"],
-            dbname="unit_tests",
+            dbname=self.tmp.name,
             table="custom",
             primary_key=None,
             write_mode=None,
@@ -60,7 +61,7 @@ class CliTests(TestCase):
     def test_multiple_files(self):
         cli.invoke(
             paths=["tests/fixtures/shp/"],
-            dbname="unit_tests.db",
+            dbname=self.tmp.name,
             table="irrelevant",
             primary_key=None,
             write_mode=None,
@@ -78,7 +79,7 @@ class CliTests(TestCase):
         with self.assertRaises(Exception):
             cli.invoke(
                 paths=["tests/fixtures/shp/does_not_exist"],
-                dbname="unit_tests.db",
+                dbname=self.tmp.name,
                 table="does_not_exist",
                 primary_key=None,
                 write_mode=None,
