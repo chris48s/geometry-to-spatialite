@@ -1,6 +1,7 @@
 import sys
 
 import geojson
+from sqlite_utils import suggest_column_types
 
 from .utils import (
     Command,
@@ -40,8 +41,9 @@ def geojson_to_spatialite(
     db = create_connection(sqlite_db, spatialite_extension)
     featurecollection = load_geojson(geojson_file)
     features = featurecollection["features"]
+    columns = suggest_column_types([f["properties"] for f in features[0:100]])
     name = table_name or filename_to_table_name(geojson_file)
-    loader = FeatureLoader(db, features, name, srid, pk, {}, write_mode)
+    loader = FeatureLoader(db, features, name, srid, pk, columns, write_mode)
     loader.load()
     db.conn.close()
 

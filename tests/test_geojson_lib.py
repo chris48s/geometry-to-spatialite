@@ -96,7 +96,7 @@ class GeoJsonToSpatialiteTests(TestCase):
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM valid;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('valid');").fetchall()
         self.assertDictEqual(
-            {"id": 2, "prop0": 1, "prop1": 0, "geometry": 0},
+            {"id": 1, "prop0": 2, "prop1": 0, "geometry": 0},
             {col[1]: col[5] for col in cols},
         )
 

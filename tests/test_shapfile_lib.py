@@ -120,7 +120,7 @@ class ShpToSpatialiteTests(TestCase):
         self.assertEqual(3, len(self.conn.execute("SELECT * FROM points;").fetchall()))
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
         self.assertDictEqual(
-            {"id": 2, "prop0": 0, "prop1": 1, "geometry": 0},
+            {"id": 1, "prop0": 0, "prop1": 2, "geometry": 0},
             {col[1]: col[5] for col in cols},
         )
 

@@ -2,12 +2,11 @@ import argparse
 import copy
 import fnmatch
 import os
-import random
 import sqlite3
-import string
 
 from shapely.geometry import shape
 from sqlite_utils import Database
+from sqlite_utils.db import COLUMN_TYPE_MAPPING
 
 EXT_NAMES = (
     "mod_spatialite",  # linux
@@ -96,41 +95,17 @@ def escape(name):
     return name.replace('"', '""')
 
 
-def compare_tables(conn, t1, t2):
-    t1_info = conn.execute(f'PRAGMA table_info("{escape(t1)}");').fetchall()
-    t2_info = conn.execute(f'PRAGMA table_info("{escape(t2)}");').fetchall()
-    t1_info = [col[1:] for col in t1_info if col[1] != "geometry"]
-    t2_info = [col[1:] for col in t2_info if col[1] != "geometry"]
-    t1_info.sort(key=lambda x: x[1])
-    t2_info.sort(key=lambda x: x[1])
-    return t1_info == t2_info
+def table_is_compatible(conn, table, columns, geom_type):
+    table_info = conn.execute(f'PRAGMA table_info("{escape(table)}");').fetchall()
 
+    input_cols = copy.deepcopy(columns)
+    for colname in input_cols:
+        input_cols[colname] = COLUMN_TYPE_MAPPING[input_cols[colname]]
+    input_cols["geometry"] = geom_type
 
-class TempTable:
-    def __init__(self, db, columns, pk):
-        self.db = db
-        self.table = self.get_table()
-        self.name = self.table.name
-        if columns:
-            self.table.create(columns, pk=pk)
+    table_cols = {col[1]: col[2] for col in table_info}
 
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_value, exc_traceback):
-        self.table.drop()
-        self.db.conn.commit()
-
-    def get_table(self):
-        # generate a random table name
-        while True:
-            choices = string.ascii_letters
-            table_name = "".join([random.choice(choices) for i in range(0, 8)])
-            if table_name not in self.db.table_names():
-                return self.db[table_name]
-
-    def insert_all(self, records, **kwargs):
-        self.table.insert_all(records, **kwargs)
+    return table_cols == input_cols
 
 
 class GeometryTable:
@@ -155,57 +130,20 @@ class GeometryTable:
     def table(self, table_name):
         self._table = self.db[table_name]
 
-    def create_from(self, temp_table):
-        # create table based on the structure of temp_table
-        table_info = self.db.conn.execute(
-            f'PRAGMA table_info("{temp_table.name}");'
-        ).fetchall()
-        columns = []
-        pks = []
-        for col in table_info:
-            if col[1] == "geometry":
-                continue
-            if col[5] > 0:
-                pks.append(escape(col[1]))
-            columns.append(f'"{escape(col[1])}" {col[2]}')
-
-        columns_clause = ",\n  ".join(columns)
-        pks_clause = ""
-        if pks:
-            pks_clause = f", PRIMARY KEY ({','.join(pks)})"
-        create_statement = (
-            f'CREATE TABLE "{escape(self.table.name)}" ({columns_clause}{pks_clause});'
-        )
-        self.db.conn.execute(create_statement)
+    def create_table(self, columns, pk):
+        self.table.create(columns, pk=pk)
         self.db.conn.execute(
             f"SELECT AddGeometryColumn(?, 'geometry', ?, ?, 2);",
             [self.table.name, self.srid, self.geom_type],
-        )
-
-    def copy_from(self, temp_table):
-        # copy the data from temp_table to self.table
-        # transforming the geometry from TEXT to GEOMETRY as we go
-        table_info = self.db.conn.execute(
-            f'PRAGMA table_info("{escape(self.table.name)}");'
-        ).fetchall()
-        columns = [
-            "ST_GeomFromText(geometry, ?)"
-            if col[1] == "geometry"
-            else f'"{escape(col[1])}"'
-            for col in table_info
-        ]
-        self.db.conn.execute(
-            f"""
-            INSERT INTO "{escape(self.table.name)}"
-            SELECT {", ".join(columns)} FROM "{temp_table.name}";
-            """,
-            [self.srid],
         )
 
     def create_spatial_index(self):
         self.db.conn.execute(
             f"SELECT CreateSpatialIndex(?, 'geometry');", [self.table.name]
         )
+
+    def insert_all(self, records, **kwargs):
+        self.table.insert_all(records, **kwargs)
 
 
 class FeatureLoader:
@@ -281,54 +219,46 @@ class FeatureLoader:
         for feature in self.features:
             records.append(self.make_record(feature))
 
-        """
-        The insert_all() method in sqlite_utils does a number of useful things
-        such as auto-detecting column types for us and adding columns as we go.
-        Unfortunately it doesn't support the GEOMETRY column type, so we will:
-        - Use insert_all() to import our data into a temp table
-          (storing the WKT representation of geometry in a text column).
-        - Make a real table based on the temp table with a GEOMETRY column.
-        - Bulk copy the data from the temp table to the real table,
-          converting the WKT column from TEXT to GEOMETRY as we go.
-        - Clean up the temp table.
-        """
-        with TempTable(self.db, self.columns, self.pk) as temp_table:
-            temp_table.insert_all(records, alter=True, pk=self.pk)
-            with GeometryTable(
-                self.db, self.table_name, self.srid, self.geom_type
-            ) as table:
-                if self.table_name in self.db.table_names():
-                    if self.write_mode == "replace":
-                        self.db.conn.execute(
-                            f'SELECT DropGeoTable("{escape(self.table_name)}")'
-                        )
-                    elif self.write_mode == "append":
-                        if not compare_tables(
-                            self.db.conn, temp_table.name, table.name
-                        ):
-                            raise DataImportError(
-                                "Input file must have same column structure as target "
-                                "table to append to an existing table."
-                            )
-                    else:
+        with GeometryTable(
+            self.db, self.table_name, self.srid, self.geom_type
+        ) as table:
+            if self.table_name in self.db.table_names():
+                if self.write_mode == "replace":
+                    self.db.conn.execute(
+                        f'SELECT DropGeoTable("{escape(self.table_name)}")'
+                    )
+                elif self.write_mode == "append":
+                    if not table_is_compatible(
+                        self.db.conn, table.name, self.columns, self.geom_type
+                    ):
                         raise DataImportError(
-                            f"Table '{self.table_name}' already exists. Use "
-                            "write_mode to replace or append to existing tables."
+                            "Input file must have same column structure as target "
+                            "table to append to an existing table."
                         )
+                else:
+                    raise DataImportError(
+                        f"Table '{self.table_name}' already exists. Use "
+                        "write_mode to replace or append to existing tables."
+                    )
 
-                if self.table_name not in self.db.table_names():
-                    table.create_from(temp_table)
+            if self.table_name not in self.db.table_names():
+                table.create_table(self.columns, self.pk)
 
-                table.copy_from(temp_table)
+            table.insert_all(
+                records,
+                alter=True,
+                pk=self.pk,
+                conversions={"geometry": f"ST_GeomFromText(?, {self.srid})"},
+            )
 
-                indexes = self.db.conn.execute(
-                    f"""
-                    SELECT name FROM sqlite_master WHERE type='table'
-                    AND name="idx_{escape(self.table_name)}_geometry";
-                    """
-                ).fetchall()
-                if len(indexes) == 0:
-                    table.create_spatial_index()
+            indexes = self.db.conn.execute(
+                f"""
+                SELECT name FROM sqlite_master WHERE type='table'
+                AND name="idx_{escape(self.table_name)}_geometry";
+                """
+            ).fetchall()
+            if len(indexes) == 0:
+                table.create_spatial_index()
 
 
 class Command:
