@@ -247,7 +247,7 @@ description = "CLI tool and Python utility functions for manipulating SQLite dat
 name = "sqlite-utils"
 optional = false
 python-versions = "*"
-version = "2.0.1"
+version = "2.3.1"
 
 [package.dependencies]
 click = "*"
@@ -299,7 +299,7 @@ secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "cer
 socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
 [metadata]
-content-hash = "3ed4aec7a88a681dcc5193130f3da04d679f841d663fa91388dc791ec83f0d06"
+content-hash = "6edad285ac5cfcfcc25d1077f4b101d73fca111c02cf53af797397948c5e3372"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -451,7 +451,7 @@ shapely = [
     {file = "Shapely-1.6.4.post2.tar.gz", hash = "sha256:c4b87bb61fc3de59fc1f85e71a79b0c709dc68364d9584473697aad4aa13240f"},
 ]
 sqlite-utils = [
-    {file = "sqlite_utils-2.0.1-py3-none-any.whl", hash = "sha256:ab906d384e97287915c361de01ea6b2c71da8fac133e07c97e9ccad9227797ab"},
+    {file = "sqlite_utils-2.3.1-py3-none-any.whl", hash = "sha256:216f64f8202762b34bd93a63b9a1d4a30e52d209af46c2879577be0e5039a30a"},
 ]
 tabulate = [
     {file = "tabulate-0.8.6.tar.gz", hash = "sha256:5470cc6687a091c7042cee89b2946d9235fe9f6d49c193a4ae2ac7bf386737c8"},
