@@ -133,13 +133,13 @@ class GeometryTable:
     def create_table(self, columns, pk):
         self.table.create(columns, pk=pk)
         self.db.conn.execute(
-            f"SELECT AddGeometryColumn(?, 'geometry', ?, ?, 2);",
+            "SELECT AddGeometryColumn(?, 'geometry', ?, ?, 2);",
             [self.table.name, self.srid, self.geom_type],
         )
 
     def create_spatial_index(self):
         self.db.conn.execute(
-            f"SELECT CreateSpatialIndex(?, 'geometry');", [self.table.name]
+            "SELECT CreateSpatialIndex(?, 'geometry');", [self.table.name]
         )
 
     def insert_all(self, records, **kwargs):
@@ -337,7 +337,7 @@ class Command:
         )
         table_arg = arg_parser.add_argument(
             "--write-mode",
-            help=f"Pass 'replace' or 'append' to overwrite or append to an existing table",
+            help="Pass 'replace' or 'append' to overwrite or append to an existing table",
             default=None,
             choices=["replace", "append"],
         )
