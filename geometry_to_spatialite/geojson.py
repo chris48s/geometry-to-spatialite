@@ -1,6 +1,6 @@
+import json
 import sys
 
-import geojson
 from sqlite_utils import suggest_column_types
 
 from .utils import (
@@ -14,9 +14,9 @@ from .utils import (
 
 def load_geojson(geojson_file):
     with open(geojson_file, "r") as f:
-        gj = geojson.load(f)
+        gj = json.load(f)
 
-    if not isinstance(gj, geojson.feature.FeatureCollection) or not gj.is_valid:
+    if gj["type"] != "FeatureCollection":
         raise DataImportError(
             f"{geojson_file} must be a valid GeoJSON FeatureCollection"
         )

@@ -116,6 +116,27 @@ class GeoJsonToSpatialiteTests(TestCase):
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
         self.assertEqual(3, len(records))
 
+    def test_success_long_decimals(self):
+        geojson_to_spatialite(
+            self.tmp.name, "tests/fixtures/geojson/longcoords.geojson"
+        )
+
+        # for this test, we need to use KML for the output format
+        # because AsText applies 6 decimal places of rounding
+        # and we're trying to test that the full input precision is stored
+        records = self.conn.execute(
+            "SELECT id, prop0, AsKml(geometry) as geomtext FROM longcoords ORDER BY id;"
+        ).fetchall()
+        self.assertEqual(1, len(records))
+        self.assertEqual(
+            (
+                1,
+                "string",
+                "<Point><coordinates>102.123456789,0.987654321</coordinates></Point>",
+            ),
+            records[0],
+        )
+
     def test_failure_table_already_exists(self):
         geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
         with self.assertRaises(DataImportError):
