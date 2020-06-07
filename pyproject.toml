@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "geometry-to-spatialite"
-version = "0.3.0"
+version = "0.3.1"
 description = "Import geographic and spatial data from files into a SpatiaLite DB"
 authors = ["chris48s"]
 license = "MIT"
