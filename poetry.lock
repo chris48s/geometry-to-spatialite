@@ -250,7 +250,7 @@ description = "CLI tool and Python utility functions for manipulating SQLite dat
 name = "sqlite-utils"
 optional = false
 python-versions = "*"
-version = "2.9.1"
+version = "2.10"
 
 [package.dependencies]
 click = "*"
@@ -470,7 +470,7 @@ shapely = [
     {file = "Shapely-1.7.0.tar.gz", hash = "sha256:e21a9fe1a416463ff11ae037766fe410526c95700b9e545372475d2361cc951e"},
 ]
 sqlite-utils = [
-    {file = "sqlite_utils-2.9.1-py3-none-any.whl", hash = "sha256:316ad8900f5c9f52631f89a35f72847fe06a73828af52aef30d6482e5c85cd52"},
+    {file = "sqlite_utils-2.10-py3-none-any.whl", hash = "sha256:5f91323eda77f4fa8da6a06936a66854a82d3485e93a08cbb6fda770d8176d5c"},
 ]
 tabulate = [
     {file = "tabulate-0.8.7-py3-none-any.whl", hash = "sha256:ac64cb76d53b1231d364babcd72abbb16855adac7de6665122f97b593f1eb2ba"},
