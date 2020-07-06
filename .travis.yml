@@ -12,7 +12,7 @@ install:
   - poetry install
 script:
   - coverage run --source=geometry_to_spatialite ./run_tests.py
-  - isort -rc -c --diff .
+  - isort --profile black -c --diff .
   - flake8 .
   - black --check .
   - poetry build
