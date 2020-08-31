@@ -111,7 +111,9 @@ class GeoJsonToSpatialiteTests(TestCase):
     def test_success_overwrite_table(self):
         geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
         geojson_to_spatialite(
-            self.tmp.name, "tests/fixtures/geojson/valid.geojson", write_mode="replace",
+            self.tmp.name,
+            "tests/fixtures/geojson/valid.geojson",
+            write_mode="replace",
         )
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
         self.assertEqual(3, len(records))
