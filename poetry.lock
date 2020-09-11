@@ -211,7 +211,7 @@ description = "Pure Python read/write support for ESRI Shapefile format"
 name = "pyshp"
 optional = false
 python-versions = ">= 2.7"
-version = "2.1.1"
+version = "2.1.2"
 
 [[package]]
 category = "dev"
@@ -440,7 +440,7 @@ pyflakes = [
     {file = "pyflakes-2.2.0.tar.gz", hash = "sha256:35b2d75ee967ea93b55750aa9edbbf72813e06a66ba54438df2cfac9e3c27fc8"},
 ]
 pyshp = [
-    {file = "pyshp-2.1.1.tar.gz", hash = "sha256:0c317dbce9e1470310ce774a57b0dd0c69e55b2eae8673e9ac74aeed49f976e7"},
+    {file = "pyshp-2.1.2.tar.gz", hash = "sha256:a0aa668cd0fc09b873f10facfe96971c0496b7fe4f795684d96cc7306ac5841c"},
 ]
 regex = [
     {file = "regex-2020.6.7-cp27-cp27m-win32.whl", hash = "sha256:8d9bb2d90e23c51aacbc58c1a11320f49b335cd67a91986cdbebcc3e843e4de8"},
