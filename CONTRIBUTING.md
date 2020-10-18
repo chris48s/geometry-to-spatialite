@@ -14,3 +14,5 @@ Development Tasks:
 * Sort imports: `isort --profile black .`
 * Run lint checks: `flake8 .`
 * Auto-format: `black .`
+* Build the docs: `cd docs && make clean html`
+* Deploy the docs: `(cd docs && make clean html) && ghp-import -n -p docs/build/html/`

@@ -9,3 +9,6 @@ geometry_to_spatialite.egg-info/
 
 # test coverage
 .coverage
+
+# built docs
+docs/build

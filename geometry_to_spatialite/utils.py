@@ -75,7 +75,7 @@ def enable_spatialite_extension(conn, extension):
                 continue
     raise DataImportError(
         "Failed to load the SpatiaLite extension. See "
-        "https://github.com/chris48s/geometry-to-spatialite#failed-to-load-the-spatialite-extension "
+        "https://chris48s.github.io/geometry-to-spatialite/troubleshooting.html#failed-to-load-the-spatialite-extension "
         "for more info."
     )
 
