@@ -154,9 +154,23 @@ class GeoJsonToSpatialiteTests(TestCase):
             )
 
     def test_failure_invalid_srid(self):
-        with self.assertRaises(DataImportError):
+        with self.assertRaises(TypeError):
             geojson_to_spatialite(
                 self.tmp.name, "tests/fixtures/geojson/valid.geojson", srid="foobar"
+            )
+
+    def test_failure_invalid_pk(self):
+        with self.assertRaises(TypeError):
+            geojson_to_spatialite(
+                self.tmp.name, "tests/fixtures/geojson/valid.geojson", pk=7
+            )
+
+    def test_failure_invalid_write_mode(self):
+        with self.assertRaises(ValueError):
+            geojson_to_spatialite(
+                self.tmp.name,
+                "tests/fixtures/geojson/valid.geojson",
+                write_mode="foobar",
             )
 
     def test_failure_geojson_not_featurecollection(self):

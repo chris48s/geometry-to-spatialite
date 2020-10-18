@@ -150,7 +150,7 @@ class FeatureLoader:
     def __init__(self, db, features, table_name, srid, pk, columns, write_mode):
         self.db = db
         if not isinstance(srid, int):
-            raise DataImportError("'srid' must be an int")
+            raise TypeError("'srid' must be an int")
         self.srid = srid
         self.features = features
         self.pk = pk

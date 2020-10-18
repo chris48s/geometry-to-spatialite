@@ -153,7 +153,17 @@ class ShpToSpatialiteTests(TestCase):
             )
 
     def test_failure_invalid_srid(self):
-        with self.assertRaises(DataImportError):
+        with self.assertRaises(TypeError):
             shp_to_spatialite(
                 self.tmp.name, "tests/fixtures/shp/points.shp", srid="foobar"
+            )
+
+    def test_failure_invalid_pk(self):
+        with self.assertRaises(TypeError):
+            shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp", pk=7)
+
+    def test_failure_invalid_write_mode(self):
+        with self.assertRaises(ValueError):
+            shp_to_spatialite(
+                self.tmp.name, "tests/fixtures/shp/points.shp", write_mode="foobar"
             )
