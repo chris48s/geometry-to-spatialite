@@ -49,7 +49,7 @@ geojson-to-spatialite --help
 ### Basic usage
 
 ```py
-from shapefile_to_spatialite import (
+from geometry_to_spatialite import (
     geojson_to_spatialite,
     shp_to_spatialite,
     DataImportError
