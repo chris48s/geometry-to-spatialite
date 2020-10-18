@@ -1,5 +1,11 @@
 # Changelog
 
+## :package: [0.3.2](https://pypi.org/project/geometry-to-spatialite/0.3.2/) - 2020-10-18
+
+* Throw `TypeError` instead of `DataImportError` if SRID is not an int
+* Tested on python 3.9
+* Documentation improvements
+
 ## :package: [0.3.1](https://pypi.org/project/geometry-to-spatialite/0.3.1/) - 2020-06-07
 
 * Ensure co-ordinates aren't rounded to 6 decimal places when importing geojson
