@@ -4,6 +4,7 @@ python:
   - '3.6'
   - '3.7'
   - '3.8'
+  - '3.9-dev'
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y spatialite-bin libsqlite3-mod-spatialite
