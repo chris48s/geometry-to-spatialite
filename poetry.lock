@@ -561,8 +561,19 @@ lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
 
 [[package]]
+name = "sqlite-fts4"
+version = "1.0.1"
+description = "Python functions for working with SQLite FTS4 search"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+test = ["pytest"]
+
+[[package]]
 name = "sqlite-utils"
-version = "2.23"
+version = "3.0"
 description = "CLI tool and Python utility functions for manipulating SQLite databases"
 category = "main"
 optional = false
@@ -571,6 +582,7 @@ python-versions = ">=3.6"
 [package.dependencies]
 click = "*"
 click-default-group = "*"
+sqlite-fts4 = "*"
 tabulate = "*"
 
 [package.extras]
@@ -640,7 +652,7 @@ testing = ["jaraco.itertools", "func-timeout"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "52b648648902939681270588bbfae7d114108fea2e28927486beddd5ffc53f31"
+content-hash = "0915c50b52c83f0632d8598ac06e2ca8b8347e8103de9c0be999f5d40bf5490e"
 
 [metadata.files]
 alabaster = [
@@ -943,9 +955,13 @@ sphinxcontrib-serializinghtml = [
     {file = "sphinxcontrib-serializinghtml-1.1.4.tar.gz", hash = "sha256:eaa0eccc86e982a9b939b2b82d12cc5d013385ba5eadcc7e4fed23f4405f77bc"},
     {file = "sphinxcontrib_serializinghtml-1.1.4-py2.py3-none-any.whl", hash = "sha256:f242a81d423f59617a8e5cf16f5d4d74e28ee9a66f9e5b637a18082991db5a9a"},
 ]
+sqlite-fts4 = [
+    {file = "sqlite-fts4-1.0.1.tar.gz", hash = "sha256:b2d4f536a28181dc4ced293b602282dd982cc04f506cf3fc491d18b824c2f613"},
+    {file = "sqlite_fts4-1.0.1-py3-none-any.whl", hash = "sha256:a41b3e510df8bda50e9b1a5162a1e8ff3b92c62a1576ff5c74aaae2cedc9d4f5"},
+]
 sqlite-utils = [
-    {file = "sqlite-utils-2.23.tar.gz", hash = "sha256:1b67e19bbb52013796c98ed9f91f5002555c6be66ebb092dfd6a8924ec82ff48"},
-    {file = "sqlite_utils-2.23-py3-none-any.whl", hash = "sha256:bb33cfe8d97f5d350b259985220de5fadc412186bfee6c8eb1e233d86dd50d8c"},
+    {file = "sqlite-utils-3.0.tar.gz", hash = "sha256:a158265fde85a6757b7f09b568b1f7d6eaf75eaae208be27336f09dc048e5bcf"},
+    {file = "sqlite_utils-3.0-py3-none-any.whl", hash = "sha256:8f041e8d22aa418846b65658f90406bde20a7f367d519200b50f9c786616658c"},
 ]
 tabulate = [
     {file = "tabulate-0.8.7-py3-none-any.whl", hash = "sha256:ac64cb76d53b1231d364babcd72abbb16855adac7de6665122f97b593f1eb2ba"},
