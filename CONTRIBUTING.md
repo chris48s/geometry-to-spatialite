@@ -9,10 +9,9 @@ This project uses:
 
 Development Tasks:
 
-* Install dependencies: `poetry install`
-* Run the test suite: `./run_tests.py`
-* Sort imports: `isort --profile black .`
-* Run lint checks: `flake8 .`
-* Auto-format: `black .`
-* Build the docs: `cd docs && make clean html`
-* Deploy the docs: `(cd docs && make clean html) && ghp-import -n -p docs/build/html/`
+* Install dependencies: `make install`
+* Run the test suite: `make test`
+* Run lint checks: `make lint`
+* Auto-format: `make format`
+* Build the docs: `make build-docs`
+* Deploy the docs: `make deploy-docs`

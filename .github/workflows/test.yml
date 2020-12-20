@@ -21,18 +21,13 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get install -y spatialite-bin libsqlite3-mod-spatialite
           pip install poetry
-          poetry install
+          make install
 
       - name: Run tests
-        run: |
-          poetry run coverage run --source=geometry_to_spatialite ./run_tests.py
-          poetry run coverage xml
+        run: make test
 
       - name: Check coding standards
-        run: |
-          poetry run isort --profile black -c --diff .
-          poetry run flake8 .
-          poetry run black --check .
+        run: make lint
 
       - name: Ensure package builds
         run: poetry build
