@@ -19,7 +19,7 @@ pyshp = "^2.1.0"
 isort = "^5.7"
 flake8 = "^3.8.4"
 black = { version = "==20.8b1", allow-prereleases = true }
-coverage = "^5.4"
+coverage = "^5.5"
 sphinx = "^3.4.3"
 sphinx_rtd_theme = "^0.5.1"
 myst-parser = "^0.13.3"
