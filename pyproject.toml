@@ -16,7 +16,7 @@ Shapely = "^1.6.4"
 pyshp = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
-isort = "^5.7"
+isort = "^5.8"
 flake8 = "^3.9.0"
 black = { version = "==20.8b1", allow-prereleases = true }
 coverage = "^5.5"
