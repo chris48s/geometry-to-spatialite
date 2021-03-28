@@ -29,8 +29,11 @@ jobs:
       - name: Check coding standards
         run: make lint
 
-      - name: Ensure package builds
+      - name: Build package
         run: poetry build
+
+      - name: Build docs
+        run: make build-docs
 
       - name: Upload coverage report to codecov
         uses: codecov/codecov-action@v1
