@@ -23,7 +23,7 @@ coverage = "^5.5"
 sphinx = "^3.5.4"
 sphinx_rtd_theme = "^0.5.2"
 myst-parser = "^0.14.0"
-ghp-import = "^1.1.0"
+ghp-import = "^2.0.1"
 
 [tool.poetry.scripts]
 geojson-to-spatialite = 'geometry_to_spatialite.geojson:main'
