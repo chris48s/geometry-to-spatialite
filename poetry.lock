@@ -148,7 +148,7 @@ pyflakes = ">=2.3.0,<2.4.0"
 
 [[package]]
 name = "ghp-import"
-version = "1.1.0"
+version = "2.0.1"
 description = "Copy your docs directly to the gh-pages branch."
 category = "dev"
 optional = false
@@ -158,7 +158,7 @@ python-versions = "*"
 python-dateutil = ">=2.8.1"
 
 [package.extras]
-dev = ["flake8", "markdown", "twine"]
+dev = ["twine", "markdown", "flake8"]
 
 [[package]]
 name = "idna"
@@ -651,7 +651,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "f406e932cb447d850a0f7838214960486cb31e872602ed40c6fef36d904abd01"
+content-hash = "976ecb571dc7d22fb64a554c917cb97c30ac7cbdc0e55b85e5108dae9f465ff7"
 
 [metadata.files]
 alabaster = [
@@ -759,7 +759,7 @@ flake8 = [
     {file = "flake8-3.9.2.tar.gz", hash = "sha256:07528381786f2a6237b061f6e96610a4167b226cb926e2aa2b6b1d78057c576b"},
 ]
 ghp-import = [
-    {file = "ghp-import-1.1.0.tar.gz", hash = "sha256:c22a9ce10c37753e2688d164d765a700dae4b8d79fa6db0a2c3132ba7881894f"},
+    {file = "ghp-import-2.0.1.tar.gz", hash = "sha256:753de2eace6e0f7d4edfb3cce5e3c3b98cd52aadb80163303d1d036bda7b4483"},
 ]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
