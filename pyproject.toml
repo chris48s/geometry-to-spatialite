@@ -20,7 +20,7 @@ isort = "^5.8"
 flake8 = "^3.9.2"
 black = { version = "==20.8b1", allow-prereleases = true }
 coverage = "^5.5"
-sphinx = "^4.0.2"
+sphinx = "^4.1.2"
 sphinx_rtd_theme = "^0.5.2"
 myst-parser = "^0.15.1"
 ghp-import = "^2.0.1"
