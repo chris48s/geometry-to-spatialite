@@ -125,6 +125,18 @@ optional = false
 python-versions = ">=3.6, <3.7"
 
 [[package]]
+name = "dateutils"
+version = "0.6.12"
+description = "Various utilities for working with date and datetime objects"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+python-dateutil = "*"
+pytz = "*"
+
+[[package]]
 name = "docutils"
 version = "0.16"
 description = "Docutils -- Python Documentation Utilities"
@@ -364,7 +376,7 @@ python-versions = ">= 2.7"
 name = "python-dateutil"
 version = "2.8.1"
 description = "Extensions to the standard Python datetime module"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 
@@ -375,7 +387,7 @@ six = ">=1.5"
 name = "pytz"
 version = "2020.4"
 description = "World timezone definitions, modern and historical"
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -430,7 +442,7 @@ vectorized = ["numpy"]
 name = "six"
 version = "1.15.0"
 description = "Python 2 and 3 compatibility utilities"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -572,7 +584,7 @@ test = ["pytest"]
 
 [[package]]
 name = "sqlite-utils"
-version = "3.13"
+version = "3.14"
 description = "CLI tool and Python utility functions for manipulating SQLite databases"
 category = "main"
 optional = false
@@ -581,13 +593,14 @@ python-versions = ">=3.6"
 [package.dependencies]
 click = "*"
 click-default-group = "*"
+dateutils = "*"
 sqlite-fts4 = "*"
 tabulate = "*"
 
 [package.extras]
 docs = ["sphinx-rtd-theme", "sphinx-autobuild"]
 flake8 = ["flake8"]
-mypy = ["mypy", "types-click", "types-tabulate"]
+mypy = ["mypy", "types-click", "types-tabulate", "types-python-dateutil"]
 test = ["pytest", "black", "hypothesis"]
 
 [[package]]
@@ -751,6 +764,10 @@ coverage = [
 dataclasses = [
     {file = "dataclasses-0.8-py3-none-any.whl", hash = "sha256:0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf"},
     {file = "dataclasses-0.8.tar.gz", hash = "sha256:8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97"},
+]
+dateutils = [
+    {file = "dateutils-0.6.12-py2.py3-none-any.whl", hash = "sha256:f33b6ab430fa4166e7e9cb8b21ee9f6c9843c48df1a964466f52c79b2a8d53b3"},
+    {file = "dateutils-0.6.12.tar.gz", hash = "sha256:03dd90bcb21541bd4eb4b013637e4f1b5f944881c46cc6e4b67a6059e370e3f1"},
 ]
 docutils = [
     {file = "docutils-0.16-py2.py3-none-any.whl", hash = "sha256:0c5b78adfbf7762415433f5515cd5c9e762339e23369dbe8000d84a4bf4ab3af"},
@@ -1024,8 +1041,8 @@ sqlite-fts4 = [
     {file = "sqlite_fts4-1.0.1-py3-none-any.whl", hash = "sha256:a41b3e510df8bda50e9b1a5162a1e8ff3b92c62a1576ff5c74aaae2cedc9d4f5"},
 ]
 sqlite-utils = [
-    {file = "sqlite-utils-3.13.tar.gz", hash = "sha256:8c9ae307ba647497b57e8442351b975a96a93e32c594e868c4d5f8402ea6b65e"},
-    {file = "sqlite_utils-3.13-py3-none-any.whl", hash = "sha256:46e0ed838dc1d08fe550a59d16254e7e32ef8735c7afd2dd5ffd225bc4e35df2"},
+    {file = "sqlite-utils-3.14.tar.gz", hash = "sha256:bb383402e658b4601e64b84e7dd1485e3efc19c54e278a94d62af874cac8fc9a"},
+    {file = "sqlite_utils-3.14-py3-none-any.whl", hash = "sha256:e87e990dfead68f32819d90e31141fabea7a9054c5a8f62cd446e1acf0c3b7b9"},
 ]
 tabulate = [
     {file = "tabulate-0.8.7-py3-none-any.whl", hash = "sha256:ac64cb76d53b1231d364babcd72abbb16855adac7de6665122f97b593f1eb2ba"},
