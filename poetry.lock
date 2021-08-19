@@ -584,7 +584,7 @@ test = ["pytest"]
 
 [[package]]
 name = "sqlite-utils"
-version = "3.15.1"
+version = "3.16"
 description = "CLI tool and Python utility functions for manipulating SQLite databases"
 category = "main"
 optional = false
@@ -600,7 +600,7 @@ tabulate = "*"
 [package.extras]
 docs = ["sphinx-rtd-theme", "sphinx-autobuild", "codespell"]
 flake8 = ["flake8"]
-mypy = ["mypy", "types-click", "types-tabulate", "types-python-dateutil"]
+mypy = ["mypy", "types-click", "types-tabulate", "types-python-dateutil", "data-science-types"]
 test = ["pytest", "black", "hypothesis"]
 
 [[package]]
@@ -1041,8 +1041,8 @@ sqlite-fts4 = [
     {file = "sqlite_fts4-1.0.1-py3-none-any.whl", hash = "sha256:a41b3e510df8bda50e9b1a5162a1e8ff3b92c62a1576ff5c74aaae2cedc9d4f5"},
 ]
 sqlite-utils = [
-    {file = "sqlite-utils-3.15.1.tar.gz", hash = "sha256:029d90209cd2f1bd5b3eae61b90f149edc27e89ee1efc3b826538e1ee762534b"},
-    {file = "sqlite_utils-3.15.1-py3-none-any.whl", hash = "sha256:b9248a180d3c0c73ce479d64bbe526fa4661c749c81b010ad7cf2af307269d1f"},
+    {file = "sqlite-utils-3.16.tar.gz", hash = "sha256:11d7b975a66b3fcf3b08b3298b2f9726896cf5915c72f2c37086dfc671f834d8"},
+    {file = "sqlite_utils-3.16-py3-none-any.whl", hash = "sha256:8c851227135109ee347e24d2893144b76e032099d417c56f479cec7b30290721"},
 ]
 tabulate = [
     {file = "tabulate-0.8.7-py3-none-any.whl", hash = "sha256:ac64cb76d53b1231d364babcd72abbb16855adac7de6665122f97b593f1eb2ba"},
