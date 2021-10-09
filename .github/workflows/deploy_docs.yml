@@ -23,6 +23,8 @@ jobs:
 
       - name: Install dependencies
         run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y libgeos-dev
           pip install poetry
           make install
 
