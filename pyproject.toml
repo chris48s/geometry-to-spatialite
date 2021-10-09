@@ -22,7 +22,7 @@ black = { version = "==20.8b1", allow-prereleases = true }
 coverage = "^6.0"
 sphinx = "^4.0.2"
 sphinx_rtd_theme = "^0.5.2"
-myst-parser = "^0.15.1"
+myst-parser = "^0.15.2"
 ghp-import = "^2.0.2"
 
 [tool.poetry.scripts]
