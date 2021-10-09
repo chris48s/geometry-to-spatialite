@@ -11,31 +11,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
+      - name: Install system packages
         run: |
           sudo apt-get -qq update
           sudo apt-get install -y spatialite-bin libsqlite3-mod-spatialite
-          pip install poetry
-          make install
 
-      - name: Run tests
-        run: make test
-
-      - name: Check coding standards
-        run: make lint
-
-      - name: Build package
-        run: poetry build
-
-      - name: Build docs
-        run: make build-docs
-
-      - name: Upload coverage report to codecov
-        uses: codecov/codecov-action@v1
+      - name: 'Build, Test, Lint: ${{ matrix.python-version }}'
+        uses: chris48s/python-package-shared@main
         with:
-          file: ./coverage.xml
+          python-version: ${{ matrix.python-version }}
