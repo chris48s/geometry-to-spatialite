@@ -1,5 +1,9 @@
 # Changelog
 
+## :package: [0.3.3](https://pypi.org/project/geometry-to-spatialite/0.3.3/) - 2021-10-17
+
+* Tested on python 3.10
+
 ## :package: [0.3.2](https://pypi.org/project/geometry-to-spatialite/0.3.2/) - 2020-10-18
 
 * Throw `TypeError` instead of `DataImportError` if SRID is not an int
