@@ -48,15 +48,15 @@ class ShpToSpatialiteTests(TestCase):
         ).fetchall()
         self.assertEqual(3, len(records))
         self.assertEqual(
-            (1, "string", True, "POLYGON((102 0, 102 1, 103 1, 103 0, 102 0))"),
+            (1, "string", True, "POLYGON((102 0, 103 0, 103 1, 102 1, 102 0))"),
             records[0],
         )
         self.assertEqual(
-            (2, "string", False, "POLYGON((100 0, 100 1, 101 1, 101 0, 100 0))"),
+            (2, "string", False, "POLYGON((100 0, 101 0, 101 1, 100 1, 100 0))"),
             records[1],
         )
         self.assertEqual(
-            (3, "string", True, "POLYGON((105 0, 104 0, 104 1, 105 1, 105 0))"),
+            (3, "string", True, "POLYGON((105 0, 105 1, 104 1, 104 0, 105 0))"),
             records[2],
         )
 
