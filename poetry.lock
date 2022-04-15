@@ -577,7 +577,7 @@ test = ["pytest"]
 
 [[package]]
 name = "sqlite-utils"
-version = "3.25.1"
+version = "3.26"
 description = "CLI tool and Python utility functions for manipulating SQLite databases"
 category = "main"
 optional = false
@@ -1042,8 +1042,8 @@ sqlite-fts4 = [
     {file = "sqlite_fts4-1.0.1-py3-none-any.whl", hash = "sha256:a41b3e510df8bda50e9b1a5162a1e8ff3b92c62a1576ff5c74aaae2cedc9d4f5"},
 ]
 sqlite-utils = [
-    {file = "sqlite-utils-3.25.1.tar.gz", hash = "sha256:df695f509a136e47e5ced2d4fc10e16c76ee3a45bae8e1a91cbba2c80285cbc9"},
-    {file = "sqlite_utils-3.25.1-py3-none-any.whl", hash = "sha256:190316e24e3b71b1df9db7df48bda6a4d0e23ceea69fc05968c669a399e002ff"},
+    {file = "sqlite-utils-3.26.tar.gz", hash = "sha256:1b6172f4f118b6ad1d21686c815e0765ae72fb02f1708dc26128032fa8a391da"},
+    {file = "sqlite_utils-3.26-py3-none-any.whl", hash = "sha256:34b5e46ac98866370a4aa762e7db02398359b60b48b42b005a77284608ea2622"},
 ]
 tabulate = [
     {file = "tabulate-0.8.9-py3-none-any.whl", hash = "sha256:d7c013fe7abbc5e491394e10fa845f8f32fe54f8dc60c6622c6cf482d25d47e4"},
