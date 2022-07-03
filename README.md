@@ -1,6 +1,6 @@
 # geometry-to-spatialite
 
-![Run tests](https://github.com/chris48s/geometry-to-spatialite/workflows/Run%20tests/badge.svg?branch=master)
+[![Run tests](https://github.com/chris48s/geometry-to-spatialite/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/chris48s/geometry-to-spatialite/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/chris48s/geometry-to-spatialite/branch/master/graph/badge.svg?token=Y15Y63PPM4)](https://codecov.io/gh/chris48s/geometry-to-spatialite)
 [![PyPI Version](https://img.shields.io/pypi/v/geometry-to-spatialite.svg)](https://pypi.org/project/geometry-to-spatialite/)
 ![License](https://img.shields.io/pypi/l/geometry-to-spatialite.svg)
