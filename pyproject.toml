@@ -10,16 +10,16 @@ homepage = "https://github.com/chris48s/geometry-to-spatialite"
 documentation = "https://chris48s.github.io/geometry-to-spatialite"
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.7"
 sqlite-utils = ">=2.1,<4.0"
 Shapely = "^1.6.4"
 pyshp = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
-isort = { version = "^5.10", python = "^3.6.2" }
+isort = "^5.10"
 flake8 = "^4.0.1"
-black = { version = "==22.8.0", python = "^3.6.2" }
-coverage = "^6.2"
+black = "==22.8.0"
+coverage = "^6.4"
 sphinx = "^4.3.2"
 sphinx_rtd_theme = "^1.0.0"
 myst-parser = "^0.16.1"
