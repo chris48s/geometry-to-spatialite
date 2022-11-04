@@ -4,7 +4,7 @@
 pip install geometry-to-spatialite
 ```
 
-You'll need python >=3.6 and the [SpatiaLite](https://www.gaia-gis.it/fossil/libspatialite/index) module for SQLite. 
+You'll need python >=3.7 and the [SpatiaLite](https://www.gaia-gis.it/fossil/libspatialite/index) module for SQLite. 
 
 ## Install SpatiaLite on Debian/Ubuntu
 
