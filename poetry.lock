@@ -485,7 +485,7 @@ test = ["cython", "html5lib", "pytest", "pytest-cov", "typed-ast"]
 
 [[package]]
 name = "sphinx-rtd-theme"
-version = "1.1.0"
+version = "1.1.1"
 description = "Read the Docs theme for Sphinx"
 category = "dev"
 optional = false
@@ -664,7 +664,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=4.6)", "pytest-black (
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "f31594521f5fc0d4cdeab370b5138ada4ba54f936ebb675d83d9ee58d0a0969f"
+content-hash = "1d470956547b8587dc78755c9a3359fc3c697a2388680e8d440ffcd4109daa4c"
 
 [metadata.files]
 alabaster = [
@@ -1030,8 +1030,8 @@ sphinx = [
     {file = "Sphinx-4.3.2.tar.gz", hash = "sha256:0a8836751a68306b3fe97ecbe44db786f8479c3bf4b80e3a7f5c838657b4698c"},
 ]
 sphinx-rtd-theme = [
-    {file = "sphinx_rtd_theme-1.1.0-py2.py3-none-any.whl", hash = "sha256:36da4267c804b98197419df8aa415d245449b8945301fce8c961038e0ba79ec5"},
-    {file = "sphinx_rtd_theme-1.1.0.tar.gz", hash = "sha256:6e20f00f62b2c05434a33c5116bc3348a41ca94af03d3d7d1714c63457073bb3"},
+    {file = "sphinx_rtd_theme-1.1.1-py2.py3-none-any.whl", hash = "sha256:31faa07d3e97c8955637fc3f1423a5ab2c44b74b8cc558a51498c202ce5cbda7"},
+    {file = "sphinx_rtd_theme-1.1.1.tar.gz", hash = "sha256:6146c845f1e1947b3c3dd4432c28998a1693ccc742b4f9ad7c63129f0757c103"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
