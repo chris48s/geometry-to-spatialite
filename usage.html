@@ -87,29 +87,29 @@
 <h2>On the console<a class="headerlink" href="#on-the-console" title="Permalink to this headline"></a></h2>
 <p>Geometry-to-spatialite installs two commands: <code class="docutils literal notranslate"><span class="pre">shapefile-to-spatialite</span></code> and <code class="docutils literal notranslate"><span class="pre">geojson-to-spatialite</span></code>. Both provide the same arguments.</p>
 <p>Basic usage</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite myfile.shp mydatabase.db
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite<span class="w"> </span>myfile.shp<span class="w"> </span>mydatabase.db
 </pre></div>
 </div>
 <p>This will create a new SQLite database called <code class="docutils literal notranslate"><span class="pre">mydatabase.db</span></code> containing a single table, <code class="docutils literal notranslate"><span class="pre">myfile</span></code></p>
 <p>You can provide multiple files:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite one.shp two.shp bundle.db
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite<span class="w"> </span>one.shp<span class="w"> </span>two.shp<span class="w"> </span>bundle.db
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">bundle.db</span></code> database will contain two tables, <code class="docutils literal notranslate"><span class="pre">one</span></code> and <code class="docutils literal notranslate"><span class="pre">two</span></code>.</p>
 <p>This means you can use wildcards:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite ~/Downloads/*.shp mydownloads.db
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite<span class="w"> </span>~/Downloads/*.shp<span class="w"> </span>mydownloads.db
 </pre></div>
 </div>
 <p>If you pass a path to one or more directories, the script will recursively search those directories for files and create tables for each one:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite ~/path/to/directory all-my-shapefiles.db
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite<span class="w"> </span>~/path/to/directory<span class="w"> </span>all-my-shapefiles.db
 </pre></div>
 </div>
 <p>For more help on usage and arguments, run</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite --help
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>shapefile-to-spatialite<span class="w"> </span>--help
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>geojson-to-spatialite --help
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>geojson-to-spatialite<span class="w"> </span>--help
 </pre></div>
 </div>
 </section>
