@@ -1,5 +1,11 @@
 # Changelog
 
+## :package: [0.4.0](https://pypi.org/project/geometry-to-spatialite/0.4.0/) - 2023-01-08
+
+* Tested on python 3.11
+* Tested with Shapely 2
+* Dropped compatibility with python <=3.7
+
 ## :package: [0.3.3](https://pypi.org/project/geometry-to-spatialite/0.3.3/) - 2021-10-17
 
 * Tested on python 3.10
