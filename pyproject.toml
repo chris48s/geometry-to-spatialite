@@ -12,7 +12,7 @@ documentation = "https://chris48s.github.io/geometry-to-spatialite"
 [tool.poetry.dependencies]
 python = "^3.7"
 sqlite-utils = ">=2.1,<4.0"
-Shapely = "^1.6.4"
+Shapely = ">=1.6.4,<3.0.0"
 pyshp = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
