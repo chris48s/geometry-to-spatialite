@@ -14,7 +14,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -73,7 +75,7 @@
            <div itemprop="articleBody">
              
   <section id="geometry-to-spatialite">
-<h1>geometry-to-spatialite<a class="headerlink" href="#geometry-to-spatialite" title="Permalink to this headline"></a></h1>
+<h1>geometry-to-spatialite<a class="headerlink" href="#geometry-to-spatialite" title="Permalink to this heading"></a></h1>
 <p>Import geographic and spatial data from files into a SpatiaLite DB.</p>
 <p>This project is primarily useful for browsing and publishing geographic and spatial data with <a class="reference external" href="https://github.com/simonw/datasette">datasette</a> and <a class="reference external" href="https://github.com/simonw/datasette-leaflet-geojson">datasette-leaflet-geojson</a>. It is inspired by <a class="reference external" href="https://github.com/simonw/csvs-to-sqlite">csvs-to-sqlite</a> and provides a similar interface.</p>
 <div class="toctree-wrapper compound">
@@ -88,7 +90,12 @@
 <li class="toctree-l2"><a class="reference internal" href="usage.html#on-the-console">On the console</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#as-a-library">As a library</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="usage.html#basic-usage">Basic usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="usage.html#module-geometry_to_spatialite">API Reference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="usage.html#module-geometry_to_spatialite">API Reference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#geometry_to_spatialite.geojson_to_spatialite"><code class="docutils literal notranslate"><span class="pre">geojson_to_spatialite()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#geometry_to_spatialite.shp_to_spatialite"><code class="docutils literal notranslate"><span class="pre">shp_to_spatialite()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="usage.html#geometry_to_spatialite.DataImportError"><code class="docutils literal notranslate"><span class="pre">DataImportError</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
