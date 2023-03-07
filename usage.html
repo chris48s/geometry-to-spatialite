@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Usage &mdash; geometry-to-spatialite  documentation</title>
@@ -11,10 +11,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
@@ -150,7 +148,7 @@
 <span class="sig-prename descclassname"><span class="pre">geometry_to_spatialite.</span></span><span class="sig-name descname"><span class="pre">geojson_to_spatialite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sqlite_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geojson_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatialite_extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4326</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geometry_to_spatialite.geojson_to_spatialite" title="Permalink to this definition"></a></dt>
 <dd><p>Load a GeoJSON file into a SpatiaLite database</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sqlite_db</strong> (<em>str</em>) – Name of the SQLite database file</p></li>
 <li><p><strong>geojson_file</strong> (<em>str</em>) – Path to a GeoJSON file to import</p></li>
@@ -171,10 +169,10 @@ existing table.
 Default: <code class="docutils literal notranslate"><span class="pre">None</span></code> (assume the table doesn’t already exist)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#geometry_to_spatialite.DataImportError" title="geometry_to_spatialite.DataImportError"><strong>DataImportError</strong></a> – </p>
 </dd>
 </dl>
@@ -185,7 +183,7 @@ Default: <code class="docutils literal notranslate"><span class="pre">None</span
 <span class="sig-prename descclassname"><span class="pre">geometry_to_spatialite.</span></span><span class="sig-name descname"><span class="pre">shp_to_spatialite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sqlite_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shp_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spatialite_extension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">srid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4326</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#geometry_to_spatialite.shp_to_spatialite" title="Permalink to this definition"></a></dt>
 <dd><p>Load a SHP file into a SpatiaLite database</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sqlite_db</strong> (<em>str</em>) – Name of the SQLite database file</p></li>
 <li><p><strong>shp_file</strong> (<em>str</em>) – Path to a SHP file to import</p></li>
@@ -206,10 +204,10 @@ existing table.
 Default: <code class="docutils literal notranslate"><span class="pre">None</span></code> (assume the table doesn’t already exist)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#geometry_to_spatialite.DataImportError" title="geometry_to_spatialite.DataImportError"><strong>DataImportError</strong></a> – </p>
 </dd>
 </dl>
