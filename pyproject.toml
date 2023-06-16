@@ -21,7 +21,7 @@ flake8 = "^5.0.4"
 black = "==23.3.0"
 coverage = "^7.2"
 sphinx = "^6.2.1"
-sphinx_rtd_theme = "^1.2.1"
+sphinx_rtd_theme = "^1.2.2"
 myst-parser = "^2.0.0"
 ghp-import = "^2.1.0"
 
