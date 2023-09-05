@@ -1,5 +1,5 @@
 SHELL := /bin/bash
-.PHONY: help build-docs deploy-docs format install lint test release
+.PHONY: help build-docs deploy-docs format install lint test build release
 
 help:
 	@grep '^\.PHONY' Makefile | cut -d' ' -f2- | tr ' ' '\n'
@@ -26,6 +26,9 @@ lint:
 test:
 	poetry run coverage run --source=geometry_to_spatialite ./run_tests.py
 	poetry run coverage xml
+
+build:
+	poetry build
 
 release:
 	# usage: `make release version=0.0.0`
