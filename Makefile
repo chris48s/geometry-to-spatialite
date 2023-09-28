@@ -12,14 +12,14 @@ deploy-docs:
 	poetry run ghp-import -n -p docs/build/html/
 
 format:
-	poetry run isort --profile black .
+	poetry run isort .
 	poetry run black .
 
 install:
 	poetry install
 
 lint:
-	poetry run isort --profile black -c --diff .
+	poetry run isort -c --diff .
 	poetry run black --check .
 	poetry run flake8 .
 
