@@ -10,7 +10,7 @@ homepage = "https://github.com/chris48s/geometry-to-spatialite"
 documentation = "https://chris48s.github.io/geometry-to-spatialite"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8"
 sqlite-utils = ">=2.1,<4.0"
 Shapely = ">=1.6.4,<3.0.0"
 pyshp = "^2.1.0"
