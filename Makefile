@@ -13,7 +13,7 @@ build-docs:
 
 deploy-docs:
 	source .venv/bin/activate && \
-	make build-docs &&
+	make build-docs && \
 	ghp-import -n -p docs/build/html/
 
 format:
