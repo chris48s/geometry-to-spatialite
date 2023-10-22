@@ -19,7 +19,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install poetry
+          pip install flit
           make install
 
       - name: Build docs

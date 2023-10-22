@@ -1,34 +1,45 @@
 SHELL := /bin/bash
-.PHONY: help build-docs deploy-docs format install lint test build release
+.PHONY: help build-docs deploy-docs build format install lint test release venv
 
 help:
 	@grep '^\.PHONY' Makefile | cut -d' ' -f2- | tr ' ' '\n'
 
+venv:
+	python3 -m venv .venv
+
 build-docs:
-	cd docs && poetry run make clean html
+	source .venv/bin/activate && \
+	cd docs && make clean html
 
 deploy-docs:
-	make build-docs
-	poetry run ghp-import -n -p docs/build/html/
+	source .venv/bin/activate && \
+	make build-docs &&
+	ghp-import -n -p docs/build/html/
 
 format:
-	poetry run isort .
-	poetry run black .
+	source .venv/bin/activate && \
+	isort . && \
+	black .
 
 install:
-	poetry install
+	python3 -m venv .venv
+	source .venv/bin/activate && \
+	pip install -e .[dev]
 
 lint:
-	poetry run isort -c --diff .
-	poetry run black --check .
-	poetry run flake8 .
+	source .venv/bin/activate && \
+	isort -c --diff . && \
+	black --check . && \
+	flake8 .
 
 test:
-	poetry run coverage run --source=geometry_to_spatialite ./run_tests.py
-	poetry run coverage xml
+	source .venv/bin/activate && \
+	coverage run --source=geometry_to_spatialite ./run_tests.py && \
+	coverage xml
 
 build:
-	poetry build
+	source .venv/bin/activate && \
+	flit build
 
 release:
 	# usage: `make release version=0.0.0`
@@ -36,4 +47,5 @@ release:
 	@echo ""
 	make lint
 	@echo ""
+	source .venv/bin/activate && \
 	./release.sh "$(version)"

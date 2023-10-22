@@ -2,6 +2,9 @@
 __pycache__/
 *.pyc
 
+# venv
+.venv
+
 # build artifacts
 build/
 dist/
