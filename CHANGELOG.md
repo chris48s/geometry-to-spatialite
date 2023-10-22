@@ -1,5 +1,9 @@
 # Changelog
 
+## :package: [0.4.1](https://pypi.org/project/geometry-to-spatialite/0.4.1/) - 2023-10-22
+
+* Tested on python 3.12
+
 ## :package: [0.4.0](https://pypi.org/project/geometry-to-spatialite/0.4.0/) - 2023-01-08
 
 * Tested on python 3.11
