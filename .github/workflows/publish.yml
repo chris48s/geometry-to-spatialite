@@ -9,6 +9,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install system packages
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get install -y spatialite-bin libsqlite3-mod-spatialite
+
       - name: Get python versions
         uses: chris48s/satisfying-python@main
         id: python-versions
