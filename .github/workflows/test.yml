@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.9', '3.10', '3.11']
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,4 +20,4 @@ jobs:
         uses: chris48s/python-package-shared@main
         with:
           python-version: ${{ matrix.python-version }}
-          pre-install: poetry
+          pre-install: flit
