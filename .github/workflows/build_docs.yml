@@ -13,7 +13,7 @@ jobs:
         id: python-versions
 
       - name: Set up Python ${{ steps.python-versions.outputs.min }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '${{ steps.python-versions.outputs.min }}'
 
