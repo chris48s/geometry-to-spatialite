@@ -24,7 +24,7 @@ jobs:
           python-version: '${{ steps.python-versions.outputs.min }}'
           pre-install: flit
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./dist
 
