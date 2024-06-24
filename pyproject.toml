@@ -32,7 +32,7 @@ dev = [
     "isort==5.13.2",
     "flake8==7.1.0",
     "black==24.4.2",
-    "coverage==7.5.3",
+    "coverage==7.5.4",
     "sphinx==7.1.2",
     "sphinx_rtd_theme==2.0.0",
     "myst-parser==3.0.1",
