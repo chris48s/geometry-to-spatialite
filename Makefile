@@ -35,6 +35,7 @@ lint:
 test:
 	source .venv/bin/activate && \
 	coverage run --source=geometry_to_spatialite ./run_tests.py && \
+	coverage report && \
 	coverage xml
 
 build:
