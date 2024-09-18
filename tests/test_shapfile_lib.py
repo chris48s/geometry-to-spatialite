@@ -29,7 +29,12 @@ class ShpToSpatialiteTests(TestCase):
         # make sure the columns have the corect types
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
         self.assertDictEqual(
-            {"id": "INTEGER", "prop0": "TEXT", "prop1": "FLOAT", "geometry": "POINT"},
+            {
+                "id": "INTEGER",
+                "prop0": "TEXT",
+                "prop1": "FLOAT",
+                "geometry": "GEOMETRY",
+            },
             {col[1]: col[2] for col in cols},
         )
 
@@ -67,7 +72,7 @@ class ShpToSpatialiteTests(TestCase):
                 "id": "INTEGER",
                 "prop0": "TEXT",
                 "prop1": "INTEGER",
-                "geometry": "POLYGON",
+                "geometry": "GEOMETRY",
             },
             {col[1]: col[2] for col in cols},
         )
@@ -139,6 +144,13 @@ class ShpToSpatialiteTests(TestCase):
         )
         records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
         self.assertEqual(3, len(records))
+
+    def test_success_mixed_geometry(self):
+        # this shapefile contains a Polygon and a MultiPolygon
+        # it should import cleanly
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/mixed_geometry.shp")
+        records = self.conn.execute("SELECT * FROM mixed_geometry;").fetchall()
+        self.assertEqual(2, len(records))
 
     def test_failure_table_already_exists(self):
         shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")

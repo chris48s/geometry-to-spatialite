@@ -59,7 +59,6 @@ def shp_to_spatialite(
     columns = {
         f[0]: shp_field_to_sql_type(f) for f in sf.fields if f[0] != "DeletionFlag"
     }
-    columns["geometry"] = features[0]["geometry"]["type"].upper()
     name = table_name or filename_to_table_name(shp_file)
     loader = FeatureLoader(db, features, name, srid, pk, columns, write_mode)
     loader.load()
