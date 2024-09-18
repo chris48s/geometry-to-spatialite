@@ -335,7 +335,7 @@ class Command:
             default=None,
             nargs="+",
         )
-        table_arg = arg_parser.add_argument(
+        arg_parser.add_argument(
             "--write-mode",
             help="Pass 'replace' or 'append' to overwrite or append to an existing table",
             default=None,
