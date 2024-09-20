@@ -27,6 +27,7 @@ class CliTests(TestCase):
             primary_key=None,
             write_mode=None,
             srid=4326,
+            geom_type="GEOMETRY",
             spatialite_extension=None,
         )
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
@@ -40,6 +41,7 @@ class CliTests(TestCase):
             primary_key=None,
             write_mode=None,
             srid=4326,
+            geom_type="GEOMETRY",
             spatialite_extension=None,
         )
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
@@ -53,6 +55,7 @@ class CliTests(TestCase):
             primary_key=None,
             write_mode=None,
             srid=4326,
+            geom_type="GEOMETRY",
             spatialite_extension=None,
         )
         records = self.conn.execute("SELECT * FROM custom ORDER BY id;").fetchall()
@@ -69,6 +72,7 @@ class CliTests(TestCase):
             primary_key=None,
             write_mode=None,
             srid=4326,
+            geom_type="GEOMETRY",
             spatialite_extension=None,
         )
         records = self.conn.execute("SELECT * FROM valid ORDER BY id;").fetchall()
@@ -85,6 +89,7 @@ class CliTests(TestCase):
                 primary_key=None,
                 write_mode=None,
                 srid=4326,
+                geom_type="GEOMETRY",
                 spatialite_extension=None,
             )
 

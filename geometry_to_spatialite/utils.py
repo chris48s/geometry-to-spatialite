@@ -15,6 +15,20 @@ EXT_NAMES = (
 )
 
 
+GEOM_TYPES = (
+    "POINT",
+    "LINESTRING",
+    "POLYGON",
+    "MULTIPOINT",
+    "MULTILINESTRING",
+    "MULTIPOLYGON",
+    "GEOMETRYCOLLECTION",
+    "GEOMETRY",
+)
+
+WRITE_MODES = ("replace", "append")
+
+
 class DataImportError(Exception):
     pass
 
@@ -147,7 +161,9 @@ class GeometryTable:
 
 
 class FeatureLoader:
-    def __init__(self, db, features, table_name, srid, pk, columns, write_mode):
+    def __init__(
+        self, db, features, table_name, srid, pk, columns, write_mode, geom_type
+    ):
         self.db = db
         if not isinstance(srid, int):
             raise TypeError("'srid' must be an int")
@@ -156,8 +172,19 @@ class FeatureLoader:
         self.pk = pk
         self.table_name = table_name
         self.columns = columns
-        self.geom_type = self.columns.pop("geometry", "GEOMETRY")
+        self.columns.pop("geometry", None)
+        self.geom_type = geom_type
         self.write_mode = write_mode
+
+    @property
+    def geom_type(self):
+        return self._geom_type
+
+    @geom_type.setter
+    def geom_type(self, geom_type):
+        if geom_type not in GEOM_TYPES:
+            raise ValueError(f"geom_type must be one of {str(GEOM_TYPES)}")
+        self._geom_type = geom_type
 
     @property
     def write_mode(self):
@@ -165,7 +192,7 @@ class FeatureLoader:
 
     @write_mode.setter
     def write_mode(self, write_mode):
-        allowed_values = (None, "replace", "append")
+        allowed_values = (None,) + WRITE_MODES
         if write_mode not in allowed_values:
             raise ValueError(f"write_mode must be one of {str(allowed_values)}")
         self._write_mode = write_mode
@@ -277,6 +304,7 @@ class Command:
         primary_key,
         write_mode,
         srid,
+        geom_type,
         spatialite_extension,
     ):
         if "." not in dbname:
@@ -295,6 +323,7 @@ class Command:
                 srid=srid,
                 pk=primary_key,
                 write_mode=write_mode,
+                geom_type=geom_type,
             )
             print(f"Imported {paths[0]} into {dbname}")
         else:
@@ -307,6 +336,7 @@ class Command:
                     srid=srid,
                     pk=primary_key,
                     write_mode=write_mode,
+                    geom_type=geom_type,
                 )
                 print(f"Imported {filename} into {dbname}")
 
@@ -339,14 +369,20 @@ class Command:
             "--write-mode",
             help="Pass 'replace' or 'append' to overwrite or append to an existing table",
             default=None,
-            choices=["replace", "append"],
+            choices=WRITE_MODES,
         )
         arg_parser.add_argument(
             "--srid",
             "-s",
-            help="Spatial Reference ID (SRID) default=4326",
+            help="Spatial Reference ID (SRID), default=4326",
             type=int,
             default=4326,
+        )
+        arg_parser.add_argument(
+            "--geom-type",
+            help="Data type to use for the geometry column, default='GEOMETRY'",
+            default="GEOMETRY",
+            choices=GEOM_TYPES,
         )
         arg_parser.add_argument(
             "--spatialite-extension",
