@@ -25,6 +25,7 @@ def shp_to_spatialite(
     srid=4326,
     pk=None,
     write_mode=None,
+    geom_type="GEOMETRY",
 ):
     """Load a SHP file into a SpatiaLite database
 
@@ -46,6 +47,8 @@ def shp_to_spatialite(
             already exist. Pass 'replace' or 'append' to overwrite or append to an
             existing table.
             Default: ``None`` (assume the table doesn't already exist)
+        geom_type (str, optional): Data type to use for the geometry column.
+            Default: ``"GEOMETRY"``
 
     Returns:
         ``None``
@@ -59,9 +62,8 @@ def shp_to_spatialite(
     columns = {
         f[0]: shp_field_to_sql_type(f) for f in sf.fields if f[0] != "DeletionFlag"
     }
-    columns["geometry"] = features[0]["geometry"]["type"].upper()
     name = table_name or filename_to_table_name(shp_file)
-    loader = FeatureLoader(db, features, name, srid, pk, columns, write_mode)
+    loader = FeatureLoader(db, features, name, srid, pk, columns, write_mode, geom_type)
     loader.load()
     db.conn.close()
 
@@ -78,5 +80,6 @@ def main():
         primary_key=args.primary_key,
         write_mode=args.write_mode,
         srid=args.srid,
+        geom_type=args.geom_type,
         spatialite_extension=args.spatialite_extension,
     )

@@ -1,4 +1,5 @@
 import tempfile
+from sqlite3 import IntegrityError
 from unittest import TestCase
 
 from geometry_to_spatialite.shapefile import shp_to_spatialite
@@ -29,7 +30,12 @@ class ShpToSpatialiteTests(TestCase):
         # make sure the columns have the corect types
         cols = self.conn.execute("PRAGMA table_info('points');").fetchall()
         self.assertDictEqual(
-            {"id": "INTEGER", "prop0": "TEXT", "prop1": "FLOAT", "geometry": "POINT"},
+            {
+                "id": "INTEGER",
+                "prop0": "TEXT",
+                "prop1": "FLOAT",
+                "geometry": "GEOMETRY",
+            },
             {col[1]: col[2] for col in cols},
         )
 
@@ -67,7 +73,7 @@ class ShpToSpatialiteTests(TestCase):
                 "id": "INTEGER",
                 "prop0": "TEXT",
                 "prop1": "INTEGER",
-                "geometry": "POLYGON",
+                "geometry": "GEOMETRY",
             },
             {col[1]: col[2] for col in cols},
         )
@@ -140,6 +146,25 @@ class ShpToSpatialiteTests(TestCase):
         records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
         self.assertEqual(3, len(records))
 
+    def test_success_mixed_geometry(self):
+        # this shapefile contains a Polygon and a MultiPolygon
+        # it should import cleanly
+        shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/mixed_geometry.shp")
+        records = self.conn.execute("SELECT * FROM mixed_geometry;").fetchall()
+        self.assertEqual(2, len(records))
+
+    def test_success_with_geom_type(self):
+        shp_to_spatialite(
+            self.tmp.name, "tests/fixtures/shp/points.shp", geom_type="POINT"
+        )
+        records = self.conn.execute("SELECT * FROM points ORDER BY id;").fetchall()
+        self.assertEqual(3, len(records))
+        cols = {
+            col[1]: col[2]
+            for col in self.conn.execute("PRAGMA table_info('points');").fetchall()
+        }
+        self.assertEqual("POINT", cols["geometry"])
+
     def test_failure_table_already_exists(self):
         shp_to_spatialite(self.tmp.name, "tests/fixtures/shp/points.shp")
         with self.assertRaises(DataImportError):
@@ -166,4 +191,18 @@ class ShpToSpatialiteTests(TestCase):
         with self.assertRaises(ValueError):
             shp_to_spatialite(
                 self.tmp.name, "tests/fixtures/shp/points.shp", write_mode="foobar"
+            )
+
+    def test_failure_incorrect_geom_type(self):
+        with self.assertRaises(IntegrityError):
+            shp_to_spatialite(
+                self.tmp.name, "tests/fixtures/shp/points.shp", geom_type="POLYGON"
+            )
+
+    def test_failure_invalid_geom_type(self):
+        with self.assertRaises(ValueError):
+            shp_to_spatialite(
+                self.tmp.name,
+                "tests/fixtures/shp/points.shp",
+                geom_type="NOT-A-GEOM-TYPE",
             )

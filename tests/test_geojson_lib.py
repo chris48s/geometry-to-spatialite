@@ -1,4 +1,5 @@
 import tempfile
+from sqlite3 import IntegrityError
 from unittest import TestCase
 
 from geometry_to_spatialite.geojson import geojson_to_spatialite
@@ -139,6 +140,20 @@ class GeoJsonToSpatialiteTests(TestCase):
             records[0],
         )
 
+    def test_success_with_geom_type(self):
+        geojson_to_spatialite(
+            self.tmp.name,
+            "tests/fixtures/geojson/longcoords.geojson",
+            geom_type="POINT",
+        )
+        records = self.conn.execute("SELECT * FROM longcoords ORDER BY id;").fetchall()
+        self.assertEqual(1, len(records))
+        cols = {
+            col[1]: col[2]
+            for col in self.conn.execute("PRAGMA table_info('longcoords');").fetchall()
+        }
+        self.assertEqual("POINT", cols["geometry"])
+
     def test_failure_table_already_exists(self):
         geojson_to_spatialite(self.tmp.name, "tests/fixtures/geojson/valid.geojson")
         with self.assertRaises(DataImportError):
@@ -183,4 +198,20 @@ class GeoJsonToSpatialiteTests(TestCase):
         with self.assertRaises(DataImportError):
             geojson_to_spatialite(
                 self.tmp.name, "tests/fixtures/geojson/valid.geojson", pk="prop1"
+            )
+
+    def test_failure_incorrect_geom_type(self):
+        with self.assertRaises(IntegrityError):
+            geojson_to_spatialite(
+                self.tmp.name,
+                "tests/fixtures/geojson/valid.geojson",
+                geom_type="POLYGON",
+            )
+
+    def test_failure_invalid_geom_type(self):
+        with self.assertRaises(ValueError):
+            geojson_to_spatialite(
+                self.tmp.name,
+                "tests/fixtures/geojson/valid.geojson",
+                geom_type="NOT-A-GEOM-TYPE",
             )
