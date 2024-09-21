@@ -1,5 +1,10 @@
 # Changelog
 
+## :package: [0.5.0](https://pypi.org/project/geometry-to-spatialite/0.5.0/) - 2024-09-21
+
+* Fix importing shapefiles with mixed geometry types - https://github.com/chris48s/geometry-to-spatialite/issues/321
+* Add `geom_type` param/`--geom-type` CLI arg - https://github.com/chris48s/geometry-to-spatialite/issues/8
+
 ## :package: [0.4.3](https://pypi.org/project/geometry-to-spatialite/0.4.3/) - 2023-10-22
 
 * Tested on python 3.12
