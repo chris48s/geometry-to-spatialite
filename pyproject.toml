@@ -35,7 +35,7 @@ dev = [
     "coverage==7.6.1"
 ]
 docs = [
-    "sphinx==8.0.2",
+    "sphinx==8.1.0",
     "sphinx-rtd-theme==3.0.1",
     "myst-parser==4.0.0",
     "ghp-import==2.1.0"
