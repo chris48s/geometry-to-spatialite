@@ -20,17 +20,15 @@ jobs:
         uses: chris48s/satisfying-python@main
         id: python-versions
 
-      - name: Set up Python ${{ steps.python-versions.outputs.min }}
+      - name: Set up Python ${{ steps.python-versions.outputs.max }}
         uses: actions/setup-python@v5
         with:
-          python-version: '${{ steps.python-versions.outputs.min }}'
+          python-version: '${{ steps.python-versions.outputs.max }}'
 
       - name: Install dependencies
         run: |
-          sudo apt-get -qq update
-          sudo apt-get install -y libgeos-dev
-          pip install flit
-          make install
+          make venv
+          source .venv/bin/activate && pip install -e .[dev,docs]
 
       - name: Deploy docs
         run: |
