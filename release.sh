@@ -54,6 +54,3 @@ git tag "$VERSION"
 
 # push to GitHub
 git push origin "$(git branch --show-current)" --tags
-
-# cleanup
-rm -rf dist/
