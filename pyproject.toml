@@ -31,7 +31,7 @@ dependencies = [
 dev = [
     "flit==3.10.1",
     "isort==5.13.2",
-    "flake8==7.1.1",
+    "flake8==7.1.2",
     "black==24.8.0",
     "coverage==7.6.1"
 ]
