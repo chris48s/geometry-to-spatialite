@@ -7,9 +7,8 @@ name = "geometry-to-spatialite"
 authors = [{name = "chris48s"}]
 description = "Import geographic and spatial data from files into a SpatiaLite DB"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "MIT"
 classifiers = [
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
