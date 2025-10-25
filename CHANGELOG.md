@@ -1,5 +1,11 @@
 # Changelog
 
+## :package: [0.6.0](https://pypi.org/project/geometry-to-spatialite/0.6.0/) - 2025-10-25
+
+* Drop python 3.8, 3.9
+* Tested on python 3.13, 3.14
+* Tested with pyshp 3
+
 ## :package: [0.5.0](https://pypi.org/project/geometry-to-spatialite/0.5.0/) - 2024-09-21
 
 * Fix importing shapefiles with mixed geometry types - https://github.com/chris48s/geometry-to-spatialite/issues/321
