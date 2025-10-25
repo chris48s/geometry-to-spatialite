@@ -8,31 +8,21 @@ authors = [{name = "chris48s"}]
 description = "Import geographic and spatial data from files into a SpatiaLite DB"
 readme = "README.md"
 license = "MIT"
-classifiers = [
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-]
 dynamic = ["version"]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "sqlite-utils>=2.1,<4.0",
     "Shapely>=1.6.4,<3.0.0",
-    "pyshp>=2.1.0,<3.0.0"
+    "pyshp>=2.1.0,<4.0.0"
 ]
 
 [project.optional-dependencies]
 dev = [
     "flit==3.12.0",
-    "isort==5.13.2",
-    "flake8==7.1.2",
-    "black==24.8.0",
-    "coverage==7.6.1"
+    "isort==7.0.0",
+    "flake8==7.3.0",
+    "black==25.9.0",
+    "coverage==7.11.0"
 ]
 docs = [
     "sphinx==8.2.3",
