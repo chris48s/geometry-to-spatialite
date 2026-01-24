@@ -278,12 +278,10 @@ class FeatureLoader:
                 conversions={"geometry": f"ST_GeomFromText(?, {self.srid})"},
             )
 
-            indexes = self.db.conn.execute(
-                f"""
+            indexes = self.db.conn.execute(f"""
                 SELECT name FROM sqlite_master WHERE type='table'
                 AND name="idx_{escape(self.table_name)}_geometry";
-                """
-            ).fetchall()
+                """).fetchall()
             if len(indexes) == 0:
                 table.create_spatial_index()
 
