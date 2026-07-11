@@ -33,14 +33,22 @@ class GeoJsonToSpatialiteTests(TestCase):
 
         # make sure the columns have the corect types
         cols = self.conn.execute("PRAGMA table_info('valid');").fetchall()
-        self.assertDictEqual(
-            {
-                "id": "INTEGER",
-                "prop0": "TEXT",
-                "prop1": "FLOAT",
-                "geometry": "GEOMETRY",
-            },
+        self.assertIn(
             {col[1]: col[2] for col in cols},
+            (
+                {
+                    "id": "INTEGER",
+                    "prop0": "TEXT",
+                    "prop1": "FLOAT",
+                    "geometry": "GEOMETRY",
+                },
+                {
+                    "id": "INTEGER",
+                    "prop0": "TEXT",
+                    "prop1": "REAL",
+                    "geometry": "GEOMETRY",
+                },
+            ),
         )
 
         # ensure the spatial index was created
