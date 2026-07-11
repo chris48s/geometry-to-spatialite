@@ -1,5 +1,9 @@
 # Changelog
 
+## :package: [0.6.1](https://pypi.org/project/geometry-to-spatialite/0.6.1/) - 2026-07-11
+
+* Declare compatibility with sqlite-utils 4.x
+
 ## :package: [0.6.0](https://pypi.org/project/geometry-to-spatialite/0.6.0/) - 2025-10-25
 
 * Drop python 3.8, 3.9
